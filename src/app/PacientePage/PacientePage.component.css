@@ -1,0 +1,16 @@
+.textomenu:hover{
+  color: #5AC5C3 !important;
+  font-weight: bold !important;
+}
+
+.color-gris{
+  background: #E7E7E7;
+}
+
+.btnatencion:hover{ 
+opacity: .8;
+}
+.difuminado {
+
+box-shadow: 5px 5px 40px 30px rgba(139,139,139,0.7), inset 0px 0px 0px 46px rgba(139,139,139,0.64);
+}

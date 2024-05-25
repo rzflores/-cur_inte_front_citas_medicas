@@ -1,0 +1,94 @@
+body{
+  background: #D9F2F1; /*primero colocamos el fondo*/
+  font-family: 'Roboto', sans-serif;
+}
+
+.bgblanco{
+  background: #FFFFFF;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 50px;
+}
+.programarcita:hover {
+  background-color: #44469D;
+  color: #fff !important;
+}
+
+#btn-mas{
+  display: none;
+}
+/*damos posición a todo el contenido*/
+.contenedor{
+  position:fixed;
+  bottom: 40px;
+  right: 40px;
+
+}
+/*Editamos el icono del boton*/
+.redes a, .icon-mas2{
+display: block; /*Se ordena en una columna*/
+text-decoration: none;
+background-color: #99d3df;
+color: #fff;
+width: 55px;
+height: 55px;
+line-height: 55px;
+text-align: center;
+border-radius: 50%;
+box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.4);
+transition: all 500ms ease;
+}
+
+.redes a:hover{
+background: #fff;
+color: #99d3df;
+}
+/*Ocultar todas las a*/
+.redes a{
+margin-bottom: -15px;
+opacity: 0;
+visibility: hidden;
+}
+/*Si da click se muestra*/
+#btn-mas:checked~ .redes a{
+margin-bottom: 10px;
+opacity: 1;
+visibility: visible;
+}
+
+/*estilos de botón*/
+.icon-mas2{
+cursor: pointer;
+background: #88bbd6;
+font-size: 23px;
+}
+
+#btn-mas:checked~ .btn-mas .icon-mas2{
+transform: rotate(137deg);
+font-size: 25px;
+}
+
+.icon-mas2:hover{
+transform: rotate(360deg);
+}
+/*Efecto sobre el contenedor del icono del boton +*/
+.btn-mas{
+border-radius: 50%;
+transition: ease 0.3s;
+animation: efecto 1.2s infinite;/*llamamos a efecto, duración de animación, repetición  en modo infinito*/
+
+}
+.btn-mas:hover{
+transform: scale(1.0);
+transition: 0.3s;
+}
+
+
+@keyframes efecto{
+0%{
+  box-shadow: 0 0 0 0 #99d3df;/*damos color inicial del aura*/
+}
+100%{
+  box-shadow: 0 0 0 25px rgba(0,0,0,0);/*damos transparencia al final del aura*/
+}
+}

@@ -1,0 +1,50 @@
+body{
+  background: #D9F2F1; /*primero colocamos el fondo*/
+  background: linear-gradient(to right, #D9F2F1,#fff );/*luego colocamos el segundo color*/
+  font-family: 'Roboto', sans-serif;
+}
+
+
+.transparente{
+  Background-color: transparent;
+}
+.bg-verdeoscuro{
+  Background-color: #5AC5C3;
+}
+
+
+.btnregistrar{
+  border-color: slategray;
+}
+
+.btnregistrar:hover{
+  background-color: #01A18E;
+}
+
+.verdeclaro{
+  background-color: slategray;
+}
+.verdeclaro:hover{
+  background-color: #04564C;
+}
+
+input[type="text"]{
+
+  outline:none; /*borde de la caja*/
+  transition:all 0.5s;
+}
+
+
+input[type="password"]{
+
+  outline:none; /*borde de la caja*/
+  transition:all 0.5s;
+}
+/*input[type="password"]:focus{
+  outline:none;
+  Background-color: #00C3AC;
+}*/
+.is-invalid {
+  border-color: red;
+}
+

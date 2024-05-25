@@ -1,0 +1,64 @@
+<div class="container-fluid">
+    <div class="row justify-content-center" style="margin-top: 100px;">
+      <div class="col-md-4 bg-verdeoscuro">
+        <div class="container py-3 rounded">
+          <h1 class="text-center text-light fw-bold">Login</h1>
+          <!--login -->
+          <form [formGroup]="formLogin" (ngSubmit)="logearUsuario()">
+            <div class="mb-2">
+              <input
+                class="form-control rounded-lg"
+                type="text"
+                formControlName="email"
+                placeholder="Jhon@correo.com"
+                [ngClass]="{'is-invalid': obtenerFormLoginError('') === 'Invalid'}"
+              />              
+              <div class="pt-1" *ngIf="obtenerFormLoginError('email') === 'Invalid'">
+                <p class="text-danger" *ngIf="obtenerFormLoginError('email') === 'Invalid'">
+                  Correo electrónico es requerido.
+                </p>
+                <p class="text-danger" *ngIf="obtenerFormLoginError('email') === 'Invalid'">
+                  Correo electrónico no es válido.
+                </p>
+              </div>
+            </div>
+            <div class="mb-4">
+              <input
+                class="form-control"
+                type="password"
+                formControlName="contrasenia"
+                placeholder="Password"
+              />
+              <div *ngIf="obtenerFormLoginError('contrasenia') === 'Invalid'">
+                <p class="text-danger">Contraseña es requerida.</p>
+              </div>
+            </div>
+            <div class="d-grid">
+              <button
+                type="submit"
+                class="btn btn-secondary rounded-pill text-light fw-bold"
+                [disabled]="!formLogin.valid"
+                >
+                Ingresar
+              </button>
+              <a class="text-light text-center mt-2" 
+                 routerLink="/recuperar">
+                ¿Olvidaste tu contraseña?
+              </a>
+            </div>
+            <div class="d-grid mt-2">
+              <a class="btn btn-secondary text-light rounded-pill fw-bold" 
+                routerLink="/registro">
+                ¿No tienes cuenta? Registrate aquí
+              </a>
+              <a class="text-light text-center mt-2" 
+                 routerLink="/main">
+                Página Principal
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
