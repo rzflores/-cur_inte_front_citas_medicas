@@ -1,0 +1,16 @@
+
+<ngb-datepicker #dp 
+                [(ngModel)]="model" 
+                (navigate)="date = $event.next" 
+                style="width: 30%;"
+                />
+
+<hr />
+
+<button class="btn btn-sm btn-outline-primary me-2" (click)="model = today">Select Today</button>
+<button class="btn btn-sm btn-outline-primary me-2" (click)="dp.navigateTo()">To current month</button>
+
+<hr />
+
+<pre>Month: {{ date.month }}.{{ date.year }}</pre>
+<pre>Model: {{ model | json }}</pre>

@@ -3,17 +3,14 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-main-page',
+  selector: 'app-panel-principal',
   standalone: true,
   imports: [
     CommonModule,
     RouterModule
   ],
-  templateUrl: './MainPage.component.html',
-  styleUrl: './MainPage.component.css',
+  templateUrl: './PanelPrincipal.component.html',
+  styleUrl: './PanelPrincipal.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MainPageComponent { 
-
-
-  
-}
+export class PanelPrincipalComponent { }

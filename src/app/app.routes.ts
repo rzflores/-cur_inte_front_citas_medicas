@@ -11,14 +11,18 @@ import { ReservacionComponent } from './AdminPage/components/Reservacion/Reserva
 import { PacienteComponent } from './AdminPage/components/Paciente/Paciente.component';
 import { RolComponent } from './AdminPage/components/Rol/Rol.component';
 import { UsuarioComponent } from './AdminPage/components/Usuario/Usuario.component';
+import { AuthGuard } from './Common/guards/login-usuario.guard';
+import { PacienteSeleccionarCitaPageComponent } from './PacienteSeleccionarCitaPage/PacienteSeleccionarCitaPage.component';
 
 export const routes: Routes = [
     { path : 'main' , component: MainPageComponent },
     { path : 'paciente' , component: PacientePageComponent },
+    { path : 'paciente/selecionar-cita' , component: PacienteSeleccionarCitaPageComponent },
     { path : 'registro' , component: RegistroPageComponent },
     { path : 'recuperar' , component: LoginPageComponent },
     { path : 'admin' , 
         component: AdminPageComponent ,
+        // canActivate: [AuthGuard],
         children : [
             { path: 'consultorio', component: ConsultorioComponent  },
             { path: 'doctor', component:  DoctorComponent },

@@ -1,21 +1,6 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
     <body>
-        
-
-            <!-- HttpSession sesion = request.getSession();
-            Usuario usu = (Usuario) sesion.getAttribute("user");//se guarda el login
-            if (usu != null) {//si se logueo bien ingresa
-                if (!usu.getNombrerol().equalsIgnoreCase("Paciente")) { //si el admin quiere ir al index no lo dejará hasta que cierre Sesión
-                    request.getRequestDispatcher("administrador.jsp").forward(request, response);
-
-                }
-            } -->
-        
         <div class="container-fluid">
             <!--Menu-->
             <nav class="navbar navbar-expand-lg navbar-light">
@@ -63,10 +48,11 @@
             <!--Body-->
             <div style="text-align: center;" class="row color-gris">
                 <div style="display: flex;flex-direction: column;align-items: center; justify-content: center; background: #5AC5C3" class="col-md-6">
-                    <span style="font-size: 60px; color: #FFF;font-weight: bold;">Hola Jonathan!</span><br>
+                    <span style="font-size: 60px; color: #FFF;font-weight: bold;">Hola {{ this.usuarioLogin?.nombre }}!</span><br>
                     <span style="font-size: 40px; color: #FFF;font-weight: bold;">Tenemos estas opciones para ti!</span><br>
                     <div class="btnatencion" style="margin-top: 40px;background: #fff;border-radius: 50px;width: 250px;padding: 10px 0px;">
-                        <a class="text-decoration-none" href="seleccionarCita.jsp">
+                        <a class="text-decoration-none" 
+                            routerLink="/paciente/selecionar-cita" >
                             <img style="width: 100px;" src="../../assets/img/icon-doctor.svg" /><br>
                             <span  style="color: #5AC5C3;font-weight: bold">Atenciones precensiales</span>
                         </a>

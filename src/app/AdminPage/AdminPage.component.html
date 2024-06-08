@@ -1,42 +1,14 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <!--css personal-->
-        <!-- <link href="css/administrador.css" rel="stylesheet" type="text/css"/> -->
-        <!--fuente de letra-->
         <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
         <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
         <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet"> -->
-        <title>Farma Store</title>
-    </head>
-    <body>
-        <!-- 
-
-            HttpSession sesion = request.getSession();
-            Usuario usu = (Usuario) sesion.getAttribute("user");
-            //Si alguien ingresar al link: administrador.jsp
-            if (usu != null) {//Inicio Sesión: osea el objeto existe
-                if (usu.getNombrerol().equalsIgnoreCase("Cliente")) {
-                    request.getRequestDispatcher("login.jsp").forward(request, response);
-
-                }
-            }
-
-         -->
-        <!-- include file="adminHeader.jsp -->
+        <app-header></app-header>
         <div class="container-fluid">
-            <div class="row">
-                <h2>Menu admin</h2>
-                <!--Panel izquierdo-->
-                <!-- @include file="adminPanelIzquierdo.jsp -->
-                <!--Panel principal derecho-->
-                <!-- @include file="adminPanelDerecho.jsp -->
-                <router-outlet></router-outlet>
+          <div class="row">
+            <div class="col-2" style="margin-left: -2%;">
+              <app-menu-lateral></app-menu-lateral>
             </div>
+            <div class="col-10" style="padding-left: 3em;padding-top: 1em;">
+              <router-outlet></router-outlet>
+            </div>
+          </div>
         </div>
-
-
-    </body>
-    <!--Sweet Alert 2-->
-    <script src="js/sweetalert2.all.min.js" type="text/javascript"></script>
-</html>

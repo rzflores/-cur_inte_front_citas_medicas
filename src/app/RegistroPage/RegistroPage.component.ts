@@ -42,6 +42,7 @@ export class RegistroPageComponent {
       nombres: ['', [Validators.required]],
       apellidos: ['', [Validators.required]],
       tipo_documento: ['', [Validators.required]],
+      rol : ['',Validators.required],
       numero_documento: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       contrasenia: ['', Validators.required],
@@ -103,11 +104,11 @@ export class RegistroPageComponent {
         email: this.formRegistroPaciente.get('email')?.value,
         contrasenia: this.formRegistroPaciente.get('contrasenia')?.value,
         celular: this.formRegistroPaciente.get('celular')?.value,
-        id_rol : this._idRolPaciente,
+        id_rol :this.formRegistroPaciente.get('rol')?.value,
         numero_documento: this.formRegistroPaciente.get('numero_documento')?.value ,
         tipo_documento: this.formRegistroPaciente.get('tipo_documento')?.value
       }
-      
+      console.log(newUsuario)
      
       //crear usuario
       this._usuarioService.PostCrearUsuario(newUsuario).subscribe({  
@@ -116,7 +117,7 @@ export class RegistroPageComponent {
             Swal.fire({
               title: 'Exito',          
               html: `<p>Usuario Registrado Correctamente.</p>`,
-              icon: 'error',          
+              icon: 'success',          
             }).then((result) => {
               if (result.isConfirmed) {
                 this._router.navigate(['/login']);

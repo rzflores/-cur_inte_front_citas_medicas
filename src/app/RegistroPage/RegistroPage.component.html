@@ -79,19 +79,12 @@
                                                 <option selected value="">Selecciona</option>
                                                 <option value="Dni">Dni</option>
                                                 <option value="CE">CE</option>
-                                                <!-- <c:if test="${user.getTipo_documento() != null}">
-                                                    <option selected value="${user.getTipo_documento()}">${user.getTipo_documento()}</option>
-                                                </c:if> -->
                                             </select>
 
                                         </div>
                                         <p class="text-danger pt-1" *ngIf="obtenerFormRegistroPacienteError('tipo_documento') === 'Invalid'">
                                             Tipo de documento es requerido.
                                         </p>        
-                                        <!-- <c:if test="${rtipo != null}">
-                                            <p class="text-danger ">${rtipo}</p>
-                                        </c:if>  -->
-
                                     </div>
                                     <!-- Grupo: DNI -->
                                     <div class="form-group col-md-6" id="grupo__dni">

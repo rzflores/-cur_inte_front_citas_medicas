@@ -1,1 +1,314 @@
-<p>Doctor works!</p>,
+            <div class="col-md-10 bg-gris">
+                <div class="row">
+                    <p class="mt-3 fw-bold fs-5">Registro de médicos</p>
+                    <p>Bienvenido UsuarioNombre, desde esta área podrás registrar, actualiza y eliminar los datos
+                        de tus médicos</p>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <a class="btn btn-success btn-nuevo"
+                               (click)="abrirModalCrearDoctor()"
+                            >Nuevo médico</a>
+                        </div>
+                    </div>
+                    <div class="row mt-2 pt-3 bg-light shadow">
+                        <div class="container ">
+                            <table class="table table-bordered text-center">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Id</th>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Apellidos </th>
+                                        <th scope="col">Especialidad </th>
+                                        <th scope="col">CMP </th>
+                                        <th scope="col">Años de exp. </th>
+                                        <th scope="col">Estado </th>
+                                        <th scope="col" colspan="2">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (doctor of listaDoctores$ | async; track doctor ; let index = $index) {
+                                        <tr> 
+                                            <td>{{ index + 1 }}</td>
+                                            <td>{{ doctor.usuario.nombre }}</td>
+                                            <td>{{ doctor.usuario.apellido }}</td>
+                                            <td>{{ doctor.especialidad.nombre_especialidad }}</td>
+                                            <td>{{ doctor.codigo_colegio }}</td>
+                                            <td>{{ doctor.anios_experiencia }}</td>
+                                            <td>{{ (doctor.usuario.es_activo) ? 'Activo' : 'Inactivo' }}</td> 
+                                            <td>
+                                                <a class="btn btn-warning text-light btn-editar"      
+                                                (click)="abrirModalEditarDoctor(doctor.ID_doctor)"                                       
+                                                ><i class="fas fa-pen"></i></a>
+                                            </td>
+                                            <td>
+                                                <button 
+                                                type="submit" 
+                                                class="btn btn-danger mibtn-cancelar"
+                                                (click)="eliminarDoctor(doctor.usuario.ID_usuario)" 
+                                                >
+                                                        <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                      } @empty {
+                                        <tr> 
+                                            <td colspan="6"> Lista de Doctores vacia</td>
+                                        </tr>
+                                      }
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!------------------------------------------------------------------------------>
+<div class="modal" id="modalCrear" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p style="color: #5AC5C3;font-weight: bold;font-size: 30px;" class="modal-title">Registrar</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form [formGroup]="formCrearMedico">
+                    <div class="modal-body">
+                        <p style="color:#ffb300; font-weight: bold;font-size: 20px;text-align: center;"> Registremos los datos del médico</p>
+                        <div class="col-12  py-3 px-3">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="Codespecialidad">Nombres</label>
+                                    <input  type="text" 
+                                            class="form-control" 
+                                            name="nombre" 
+                                            value="" 
+                                            placeholder="Jhon Doe"
+                                            formControlName="nombresC"
+                                            [ngClass]="{'is-invalid': obtenerFormCrearDoctorError('nombresC') === 'Invalid'}"
+                                            >
+                                </div>          
+                                <p class="text-danger pt-1" *ngIf="obtenerFormCrearDoctorError('nombresC') === 'Invalid'">
+                                    Nombres es requerido.
+                                </p>               
+                                <div class="form-group">
+                                    <label for="especialidad">Apellidos</label>
+                                    <input  type="text" 
+                                            class="form-control" 
+                                            name="apellido_paterno" 
+                                            value="" 
+                                            placeholder="Pacheco"
+                                            formControlName="apellidosC"
+                                            [ngClass]="{'is-invalid': obtenerFormCrearDoctorError('apellidosC') === 'Invalid'}"
+                                            >
+                                </div>
+                                <p class="text-danger pt-1" *ngIf="obtenerFormCrearDoctorError('apellidosC') === 'Invalid'">
+                                    Apellidos es requerido.
+                                </p>   
+                                <div class="form-group">
+                                    <label for="email">Correo</label>
+                                    <input  type="email" 
+                                            class="form-control" 
+                                            name="email" 
+                                            value="" 
+                                            placeholder="jpaniagua@gmail.com"
+                                            formControlName="emailC"
+                                            [ngClass]="{'is-invalid': obtenerFormCrearDoctorError('emailC') === 'Invalid'}"
+                                            >
+                                </div>
+                                <p class="text-danger pt-1" *ngIf="obtenerFormCrearDoctorError('emailC') === 'Invalid'">
+                                    Correo es requerido.
+                                </p>  
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input  type="password" 
+                                            class="form-control" 
+                                            name="password" 
+                                            value="" 
+                                            placeholder="*************"
+                                            formControlName="contraseniaC"
+                                            [ngClass]="{'is-invalid': obtenerFormCrearDoctorError('contraseniaC') === 'Invalid'}"
+                                            >
+                                </div>
+                                <p class="text-danger pt-1" *ngIf="obtenerFormCrearDoctorError('contraseniaC') === 'Invalid'">
+                                    Contraseña es requerida.
+                                </p> 
+                                <div class="form-group">
+                                    <label for="tipoDocumento">Tipo Documento</label>
+                                    <select class="form-select" 
+                                            name="tipoDocumento" 
+                                            id="tipoDocumento"
+                                            formControlName="tipo_documentoC"
+                                            [ngClass]="{'is-invalid': obtenerFormCrearDoctorError('tipo_documentoC') === 'Invalid'}"
+                                            >
+                                        <option value="Dni">DNI</option>
+                                        <option value="CE">C.E.</option>
+                                    </select>
+                                </div>
+                                <p class="text-danger pt-1" *ngIf="obtenerFormCrearDoctorError('tipo_documentoC') === 'Invalid'">
+                                    Tipo de documento es requerido.
+                                </p>      
+                                <div class="form-group">
+                                    <label for="dni">Numero de Documento</label>
+                                    <input  type="text" 
+                                            class="form-control" 
+                                            name="dni" 
+                                            value="" 
+                                            placeholder="70030602"
+                                            formControlName="numero_documentoC"
+                                            [ngClass]="{'is-invalid': obtenerFormCrearDoctorError('numero_documentoC') === 'Invalid'}"
+
+                                            >
+                                </div>
+                                <p class="text-danger pt-1" *ngIf="obtenerFormCrearDoctorError('numero_documentoC') === 'Invalid'">
+                                    Numero de documento es requerido.
+                                </p> 
+                                <!-- Grupo: Especialidad -->
+                                <div class="form-group">
+                                    <label for="cboRol">Especialidad</label>
+                                    <select class="form-select" 
+                                            name="cboEspecialidad" 
+                                            id="cboEspecialidad"
+                                            formControlName="especialidadC"
+                                            [ngClass]="{'is-invalid': obtenerFormCrearDoctorError('especialidadC') === 'Invalid'}"
+                                            >
+                                            @for (especialidad of listaEspecialidades$ | async; track especialidad ; let index = $index) {
+                                                <option value="{{ especialidad.ID_especialidad }}">{{especialidad.nombre_especialidad}}</option>
+                                            } @empty {
+                                                <option>Sin datos</option>
+                                            }
+                                    </select>
+                                </div>
+                            <p class="text-danger pt-1" *ngIf="obtenerFormCrearDoctorError('especialidadC') === 'Invalid'">
+                                Especialidad es requerido.
+                            </p> 
+                            <div class="form-group">
+                                <label for="dni">Años de experiencia</label>
+                                <input  type="text" 
+                                        class="form-control" 
+                                        name="dni" 
+                                        placeholder="0"
+                                        formControlName="anios_experianciaC"
+                                        [ngClass]="{'is-invalid': obtenerFormCrearDoctorError('anios_experianciaC') === 'Invalid'}"
+
+                                        >
+                            </div>
+                            <p class="text-danger pt-1" *ngIf="obtenerFormCrearDoctorError('anios_experianciaC') === 'Invalid'">
+                                Años de experiencia es requerido.
+                            </p> 
+                            <div class="form-group">
+                                <label for="dni">Codigo colegio</label>
+                                <input  type="text" 
+                                        class="form-control" 
+                                        name="dni" 
+                                        value="" 
+                                        placeholder="CVE-12"
+                                        formControlName="codigo_colegioC"
+                                        [ngClass]="{'is-invalid': obtenerFormCrearDoctorError('codigo_colegioC') === 'Invalid'}"
+                                        >
+                            </div>
+                            <p class="text-danger pt-1" *ngIf="obtenerFormCrearDoctorError('numero_documentoC') === 'Invalid'">
+                                Codigo Colegio es requerido.
+                            </p> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input  class="btn btn-success rounded-pill text-light fw-bold" 
+                                type="submit" 
+                                name="accion"
+                                (click)="crearDoctor()" 
+                                value="Crear Medico">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<!------------------------------------------------------------------------------>
+<div class="modal" id="modalEditar" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <p style="color: #5AC5C3;font-weight: bold;font-size: 30px;" class="modal-title">Editar</p>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    <form [formGroup]="formEditarMedico">
+                        <div class="modal-body">
+                            <p style="color:#ffb300; font-weight: bold;font-size: 30px;text-align: center;"> Editemos
+                                los datos del médico</p>
+                                <div class="col-12  py-3 px-3">
+                                    <div class="row">
+                                        <!-- Grupo: Especialidad -->
+                                        <div class="form-group">
+                                            <label for="cboRol">Especialidad</label>
+                                            <select class="form-select" 
+                                                    name="cboEspecialidad" 
+                                                    id="cboEspecialidad"
+                                                    formControlName="especialidadE"
+                                                    >
+                                                    @for (especialidad of listaEspecialidades$ | async; track especialidad ; let index = $index) {
+                                                        <option value="{{ especialidad.ID_especialidad }}">{{especialidad.nombre_especialidad}}</option>
+                                                    } @empty {
+                                                        <option>Sin datos</option>
+                                                    }
+                                            </select>
+                                        </div>
+                                    <!-- <p class="text-danger pt-1" *ngIf="obtenerFormCrearUsuarioError('rolC') === 'Invalid'">
+                                        Rol es requerido.
+                                    </p>  -->
+                                    <div class="form-group">
+                                        <label for="dni">Años de experiencia</label>
+                                        <input  type="text" 
+                                                class="form-control" 
+                                                name="dni" 
+                                                placeholder="0"
+                                                formControlName="anios_experianciaE"
+                                                >
+                                    </div>
+                                    <!-- <p class="text-danger pt-1" *ngIf="obtenerFormCrearUsuarioError('numero_documentoC') === 'Invalid'">
+                                        Numero de documento es requerido.
+                                    </p>  -->
+                                    <div class="form-group">
+                                        <label for="dni">Codigo colegio</label>
+                                        <input  type="text" 
+                                                class="form-control" 
+                                                name="dni" 
+                                                value="" 
+                                                placeholder="CVE-12"
+                                                formControlName="codigo_colegioE"
+                                                >
+                                    </div>
+                                    <!-- <p class="text-danger pt-1" *ngIf="obtenerFormCrearUsuarioError('numero_documentoC') === 'Invalid'">
+                                        Numero de documento es requerido.
+                                    </p>  -->
+                                    <div class="form-group">
+                                        <label for="estadoE">Estado</label>
+                                        <select class="form-select" 
+                                                name="estadoE" 
+                                                id="estadoE"
+                                                formControlName="estadoE"
+                                                >
+                                            <option value="1">Activo</option>
+                                            <option value="0">Inactivo</option>
+                                        </select>
+                                    </div>
+                                    <!-- <p class="text-danger pt-1" *ngIf="obtenerFormCrearUsuarioError('numero_documentoC') === 'Invalid'">
+                                        Numero de documento es requerido.
+                                    </p>  -->
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input class="btn btn-secondary rounded-pill text-light fw-bold " 
+                                    type="submit"
+                                    (click)="editarDoctor()" 
+                                    name="accion" 
+                                    value="Editar Medico">
+                        </div>
+                    </form>
+                    </div>
+                </div>
+</div>
+         
+            
+        

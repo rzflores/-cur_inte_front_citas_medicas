@@ -1,1 +1,37 @@
-<p>Rol works!</p>,
+        <div class="col-md-10 bg-gris">
+            <div class="row">
+                <p class="mt-3 fw-bold fs-5">Visualización de roles</p>
+                <p>Bienvenido UsuarioNombre, desde esta área podrás visualizar los datos de tus roles</p>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                </div>
+                <div class="row mt-2 pt-3 bg-light shadow">
+                    <div class="container ">
+                        <table class="table table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Descripción</th>
+                                </tr>
+                            </thead>
+                             <tbody>
+                                @for (rol of listaRoles$ | async; track rol ; let index = $index) {
+                                    <tr> 
+                                        <td>{{ index + 1 }}</td>
+                                        <td>{{ rol.nombre }}</td>
+                                        <td>{{ rol.descripcion }}</td>
+                                    </tr>
+                                  } @empty {
+                                    <tr> 
+                                        <td colspan="3"> Lista de roles vacia</td>
+                                    </tr>
+                                  }
+                            </tbody> 
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 

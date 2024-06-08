@@ -1,1 +1,365 @@
-<p>Usuario works!</p>,
+
+        <div class="col-md-10 bg-gris">
+            <div class="row">
+                <p class="mt-3 fw-bold fs-5">Registro de Usuarios</p>
+                <p>Bienvenido UsuarioNombre, desde esta área podrás registrar, actualiza y eliminar los datos de tus usuarios</p>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3"> 
+                        <a class="btn btn-success btn-crear"  (click)="abrirModalCrearUsuario()">Nuevo Usuario</a>
+                    </div> 
+                </div>
+                <div class="row mt-2 pt-3 bg-light shadow">
+                    <div class="container ">
+                        <table class="table table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Apellido</th>
+                                    <th scope="col">Rol</th>
+                                    <th scope="col">Correo</th>
+                                    <th scope="col">Celular</th>
+                                    <th scope="col">Estado</th>
+                                    <th scope="col" colspan="2">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (usu of listaUsuarios$ | async; track usu ; let index = $index) {
+                                    <tr> 
+                                        <td>{{ index + 1 }}</td>
+                                        <td>{{ usu.nombre }}</td>
+                                        <td>{{ usu.apellido }}</td>
+                                        <td>{{ usu.rol.nombre  }}</td> 
+                                        <td>{{ usu.email  }}</td> 
+                                        <td>{{ usu.celular  }}</td>  
+                                        <td>{{ (usu.es_activo) ? 'Activo' : 'Inactivo' }}</td> 
+                                        <td>
+                                            <a class="btn btn-warning text-light btn-editar" 
+                                            (click)="abrirModalEditarUsuario(usu.ID_usuario)"
+                                            ><i class="fas fa-pen"></i></a>
+                                        </td>
+                                        <td>
+                                            <button 
+                                                    type="submit" 
+                                                    class="btn btn-danger mibtn-cancelar"
+                                                    (click)="eliminarUsuario(usu.ID_usuario)"
+                                                    >
+                                                    <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                  } @empty {
+                                    <tr> 
+                                        <td colspan="8"> Lista de usuarios vacia</td>
+                                    </tr>
+                                  }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+<!------------------------------------------------------------------------------>
+
+<div class="modal fade slow" id="modalCrear" tabindex="-1">
+    <div class="modal-dialog">
+        <div  class="modal-content">
+            <div class="modal-header">
+                <p style="color: #5AC5C3;font-weight: bold;font-size: 30px;" class="modal-title">Nuevo Usuario</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form [formGroup]="formCrearUsuario" class="">
+            <div class="modal-body">
+                <p style="color:#ffb300; font-weight: bold;font-size: 30px;text-align: center;"> Crea una nuevo usuario</p>
+                <div class="col-12  py-3 px-3">
+                    <div class="row">
+                        <!-- Grupo: Rol -->
+                        <div class="form-group">
+                            <label for="cboRol">RoL</label>
+                            <select class="form-select" 
+                                    name="cboRol" 
+                                    id="cboRol"
+                                    formControlName="rolC"
+                                    [ngClass]="{'is-invalid': obtenerFormCrearUsuarioError('rolC') === 'Invalid'}"
+                                    >
+                                    @for (rol of listaRoles$ | async; track rol ; let index = $index) {
+                                        <option value="{{ rol.ID_rol }}">{{rol.nombre}}</option>
+                                    } @empty {
+                                        <option>Sin datos</option>
+                                    }
+                            </select>
+                        </div>
+                        <p class="text-danger pt-1" *ngIf="obtenerFormCrearUsuarioError('rolC') === 'Invalid'">
+                            Rol es requerido.
+                        </p> 
+                        <div class="form-group">
+                            <label for="Codespecialidad">Nombres</label>
+                            <input  type="text" 
+                                    class="form-control" 
+                                    name="nombre" 
+                                    value="" 
+                                    placeholder="Jhon Doe"
+                                    formControlName="nombresC"
+                                    [ngClass]="{'is-invalid': obtenerFormCrearUsuarioError('nombresC') === 'Invalid'}"
+                                    >
+                        </div>          
+                        <p class="text-danger pt-1" *ngIf="obtenerFormCrearUsuarioError('nombresC') === 'Invalid'">
+                            Nombres es requerido.
+                          </p>               
+                        <div class="form-group">
+                            <label for="especialidad">Apellidos</label>
+                            <input  type="text" 
+                                    class="form-control" 
+                                    name="apellido_paterno" 
+                                    value="" 
+                                    placeholder="Pacheco"
+                                    formControlName="apellidosC"
+                                    [ngClass]="{'is-invalid': obtenerFormCrearUsuarioError('apellidosC') === 'Invalid'}"
+                                    >
+                        </div>
+                        <p class="text-danger pt-1" *ngIf="obtenerFormCrearUsuarioError('apellidosC') === 'Invalid'">
+                            Apellidos es requerido.
+                        </p>   
+                        <div class="form-group">
+                            <label for="email">Correo</label>
+                            <input  type="email" 
+                                    class="form-control" 
+                                    name="email" 
+                                    value="" 
+                                    placeholder="jpaniagua@gmail.com"
+                                    formControlName="emailC"
+                                    [ngClass]="{'is-invalid': obtenerFormCrearUsuarioError('emailC') === 'Invalid'}"
+                                    >
+                        </div>
+                        <p class="text-danger pt-1" *ngIf="obtenerFormCrearUsuarioError('emailC') === 'Invalid'">
+                            Correo es requerido.
+                        </p>  
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input  type="password" 
+                                    class="form-control" 
+                                    name="password" 
+                                    value="" 
+                                    placeholder="*************"
+                                    formControlName="contraseniaC"
+                                    [ngClass]="{'is-invalid': obtenerFormCrearUsuarioError('contraseniaC') === 'Invalid'}"
+                                    >
+                        </div>
+                        <p class="text-danger pt-1" *ngIf="obtenerFormCrearUsuarioError('contraseniaC') === 'Invalid'">
+                            Contraseña es requerida.
+                        </p> 
+                        <div class="form-group">
+                            <label for="tipoDocumento">Tipo Documento</label>
+                            <select class="form-select" 
+                                    name="tipoDocumento" 
+                                    id="tipoDocumento"
+                                    formControlName="tipo_documentoC"
+                                    [ngClass]="{'is-invalid': obtenerFormCrearUsuarioError('tipo_documentoC') === 'Invalid'}"
+                                    >
+                                <option value="Dni">DNI</option>
+                                <option value="CE">C.E.</option>
+                            </select>
+                        </div>
+                        <p class="text-danger pt-1" *ngIf="obtenerFormCrearUsuarioError('tipo_documentoC') === 'Invalid'">
+                            Tipo de documento es requerido.
+                        </p>      
+                        <div class="form-group">
+                            <label for="dni">Numero de Documento</label>
+                            <input  type="text" 
+                                    class="form-control" 
+                                    name="dni" 
+                                    value="" 
+                                    placeholder="70030602"
+                                    formControlName="numero_documentoC"
+                                    [ngClass]="{'is-invalid': obtenerFormCrearUsuarioError('numero_documentoC') === 'Invalid'}"
+                                    >
+                        </div>
+                        <p class="text-danger pt-1" *ngIf="obtenerFormCrearUsuarioError('numero_documentoC') === 'Invalid'">
+                            Numero de documento es requerido.
+                        </p> 
+                        <div class="form-group">
+                            <label for="telefono">Celular</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   name="telefono" 
+                                   value="" 
+                                   placeholder="983514699"
+                                   formControlName="celularC"
+                                   [ngClass]="{'is-invalid': obtenerFormCrearUsuarioError('celularC') === 'Invalid'}"
+                                   >
+                        </div>      
+                        <p class="text-danger pt-1" *ngIf="obtenerFormCrearUsuarioError('celularC') === 'Invalid'">
+                            Celular es requerido.
+                        </p>                  
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <input class="btn btn-success btn-crear rounded-pill text-light fw-bold " 
+                       type="submit" 
+                       name="accion" 
+                       [disabled]="!formCrearUsuario.valid" 
+                       value="Crear Usuario"
+                       (click)="crearUsuario()"
+                       
+                       >
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!------------------------------------------------------------------------------>
+
+<div class="modal fade slow" id="modalEditar" tabindex="-1">
+    <div class="modal-dialog">
+        <div  class="modal-content">
+            <div class="modal-header">
+                <p style="color: #5AC5C3;font-weight: bold;font-size: 30px;" class="modal-title">Editar</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form [formGroup]="formEditarUsuario" >
+            <div class="modal-body">
+                <p style="color:#ffb300; font-weight: bold;font-size: 30px;text-align: center;"> Editemos el usuario</p>
+                <div class="col-12  py-3 px-3">
+                    <div class="row">
+                        
+                        <!-- Grupo: Rol -->
+                        <div class="form-group">
+                            <label for="cboRol">RoL</label>
+                            <select class="form-select" 
+                                    name="cboRol" 
+                                    id="cboRol"
+                                    formControlName="rolE"
+                                    [ngClass]="{'is-invalid': obtenerFormEditarUsuarioError('rolE') === 'Invalid'}"
+                                    >
+                                    @for (rol of listaRoles$ | async; track rol ; let index = $index) {
+                                        <option value="{{ rol.ID_rol }}">{{rol.nombre}}</option>
+                                    } @empty {
+                                        <option>Sin datos</option>
+                                    }
+                            </select>
+                        </div>
+                        <p class="text-danger pt-1" *ngIf="obtenerFormEditarUsuarioError('rolE') === 'Invalid'">
+                            Rol es requerido.
+                        </p> 
+                        <div class="form-group">
+                            <label for="Codespecialidad">Nombres</label>
+                            <input  type="text" 
+                                    class="form-control" 
+                                    name="nombre" 
+                                    value="" 
+                                    placeholder="Jhon Doe"
+                                    formControlName="nombresE"
+                                    [ngClass]="{'is-invalid': obtenerFormEditarUsuarioError('nombresE') === 'Invalid'}"
+                                    >
+                        </div>          
+                        <p class="text-danger pt-1" *ngIf="obtenerFormEditarUsuarioError('nombresE') === 'Invalid'">
+                            Nombres es requerido.
+                          </p>               
+                        <div class="form-group">
+                            <label for="especialidad">Apellidos</label>
+                            <input  type="text" 
+                                    class="form-control" 
+                                    name="apellido_paterno" 
+                                    value="" 
+                                    placeholder="Pacheco"
+                                    formControlName="apellidosE"
+                                    [ngClass]="{'is-invalid': obtenerFormEditarUsuarioError('apellidosE') === 'Invalid'}"
+                                    >
+                        </div>
+                        <p class="text-danger pt-1" *ngIf="obtenerFormEditarUsuarioError('apellidosE') === 'Invalid'">
+                            Apellidos es requerido.
+                        </p>   
+                        <div class="form-group">
+                            <label for="email">Correo</label>
+                            <input  type="email" 
+                                    class="form-control" 
+                                    name="email" 
+                                    value="" 
+                                    placeholder="jpaniagua@gmail.com"
+                                    formControlName="emailE"
+                                    [ngClass]="{'is-invalid': obtenerFormEditarUsuarioError('emailE') === 'Invalid'}"
+                                    >
+                        </div>
+                        <p class="text-danger pt-1" *ngIf="obtenerFormEditarUsuarioError('emailE') === 'Invalid'">
+                            Correo es requerido.
+                        </p>  
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input  type="password" 
+                                    class="form-control" 
+                                    name="password" 
+                                    value="" 
+                                    placeholder="*************"
+                                    formControlName="contraseniaE"
+                                    [ngClass]="{'is-invalid': obtenerFormEditarUsuarioError('contraseniaE') === 'Invalid'}"
+                                    >
+                        </div>
+                        <p class="text-danger pt-1" *ngIf="obtenerFormEditarUsuarioError('contraseniaE') === 'Invalid'">
+                            Contraseña es requerida.
+                        </p> 
+                        <div class="form-group">
+                            <label for="tipoDocumento">Tipo Documento</label>
+                            <select class="form-select" 
+                                    name="tipoDocumento" 
+                                    id="tipoDocumento"
+                                    formControlName="tipo_documentoE"
+                                    [ngClass]="{'is-invalid': obtenerFormEditarUsuarioError('tipo_documentoE') === 'Invalid'}"
+                                    >
+                                <option value="Dni">DNI</option>
+                                <option value="CE">C.E.</option>
+                            </select>
+                        </div>
+                        <p class="text-danger pt-1" *ngIf="obtenerFormEditarUsuarioError('tipo_documentoE') === 'Invalid'">
+                            Tipo de documento es requerido.
+                        </p>      
+                        <div class="form-group">
+                            <label for="dni">Numero de Documento</label>
+                            <input  type="text" 
+                                    class="form-control" 
+                                    name="dni" 
+                                    value="" 
+                                    placeholder="70030602"
+                                    formControlName="numero_documentoE"
+                                    [ngClass]="{'is-invalid': obtenerFormEditarUsuarioError('numero_documentoE') === 'Invalid'}"
+                                    >
+                        </div>
+                        <p class="text-danger pt-1" *ngIf="obtenerFormEditarUsuarioError('numero_documentoE') === 'Invalid'">
+                            Numero de documento es requerido.
+                        </p> 
+                        <div class="form-group">
+                            <label for="telefono">Celular</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   name="telefono" 
+                                   value="" 
+                                   placeholder="983514699"
+                                   formControlName="celularE"
+                                   [ngClass]="{'is-invalid': obtenerFormEditarUsuarioError('celularE') === 'Invalid'}"
+                                   >
+                        </div>      
+                        <p class="text-danger pt-1" *ngIf="obtenerFormEditarUsuarioError('celularE') === 'Invalid'">
+                            Celular es requerido.
+                        </p>    
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input class="btn btn-success  rounded-pill text-light fw-bold " 
+                       type="submit" 
+                       name="accion" 
+                       [disabled]="!formEditarUsuario.valid" 
+                       value="Editar Usuario"
+                       (click)="editarUsuario()"
+                       >
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
