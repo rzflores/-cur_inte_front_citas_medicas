@@ -3,11 +3,12 @@ import { Injectable } from '@angular/core';
 import { Doctor } from '../../Common/models/Doctor.model';
 import { Observable } from 'rxjs';
 import { NestResponse } from '../../Common/models/NestResponse.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable(
 )
 export class DoctorService {
-  private readonly url = "http://localhost:3000/v1/api/doctor";
+  private readonly url = environment.apiUrl + "/v1/api/doctor";
   constructor(
     private _httpClient : HttpClient,  
   ) { }

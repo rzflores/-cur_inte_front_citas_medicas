@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Injectable, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injectable, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbCalendar, NgbDateStruct, NgbDatepickerI18n, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const I18N_VALUES = {
   esp: {
     weekdays: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'],
-    months: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Juni', 'Juli', 'Agos', 'Sep', 'Oct', 'Nov', 'Dic'],
+    months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
   }
 };
 
@@ -50,6 +50,8 @@ export class CustomDatepickerI18n extends NgbDatepickerI18n {
 })
 export class CustomCalendarDateComponent {
   
+  @Output() valorFechaEmit = new EventEmitter<any>();
+
   today = inject(NgbCalendar).getToday();
 	model: NgbDateStruct;
 	date: { year: number; month: number };
@@ -59,6 +61,10 @@ export class CustomCalendarDateComponent {
     this.model = { ...this.today };
     this.date = { year: todayNew.getFullYear(), month: todayNew.getMonth() + 1 };
     
+  }
+
+  enviarModeloFecha(){
+    this.valorFechaEmit.emit(this.model)
   }
 
   

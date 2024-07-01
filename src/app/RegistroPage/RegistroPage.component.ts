@@ -27,7 +27,6 @@ export class RegistroPageComponent {
   formRegistroPaciente : FormGroup ;
 
   private readonly _usuarioService = inject(UsuarioService) 
-  private readonly _pacienteService = inject(PacienteService) 
 
   private readonly _idRolPaciente : string = "fe6ae855-1705-11ef-9a31-0242ac150002";
 
@@ -48,7 +47,7 @@ export class RegistroPageComponent {
       contrasenia: ['', Validators.required],
       celular:['', Validators.required],
     });
-
+    this.formRegistroPaciente.get('rol')?.setValue(this._idRolPaciente);
     
   }
 

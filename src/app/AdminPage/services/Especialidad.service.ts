@@ -2,11 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Especialidad } from '../../Common/models/Especialidad.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable(
 )
 export class EspecialidadService {
-  private readonly url = "http://localhost:3000/v1/api/especialidad";
+  private readonly url =  environment.apiUrl + "/v1/api/especialidad";
 
   constructor(
     private _httpClient : HttpClient,  

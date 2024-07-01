@@ -60,6 +60,7 @@ logearUsuario(){
             html: `<p>${response.message}</p>`,
             icon: 'error',          
           });
+          this.formLogin.reset();
           return;
         }
       }else{

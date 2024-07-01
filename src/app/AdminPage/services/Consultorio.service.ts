@@ -29,4 +29,7 @@ export class ConsultorioService {
   DeleteConsultorio(uuid : string): Observable<boolean>{
     return this._httpClient.delete<boolean>(`${this.url}/${uuid}`)
   }
+  PostConsultorioPorDoctor(uuid : string): Observable<Consultorio>{
+    return this._httpClient.post<Consultorio>(`${this.url}/doctor/${uuid}`,'')
+  }
 }

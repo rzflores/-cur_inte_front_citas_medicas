@@ -4,11 +4,12 @@ import { Observable } from 'rxjs';
 import { Usuario } from '../models/Usuario.model';
 import { NestResponse } from '../models/NestResponse.model';
 import { ClassValidatorResponse } from '../models/ClassValidatorResponse.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class UsuarioService {
 
-  private readonly url = "http://localhost:3000/v1/api/usuario";
+  private readonly url = environment.apiUrl + "/v1/api/usuario";
 
   constructor(
     private _httpClient : HttpClient,    

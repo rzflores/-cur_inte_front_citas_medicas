@@ -61,6 +61,7 @@ export class UsuarioComponent {
       emailE: ['', [Validators.required, Validators.email]],
       contraseniaE: ['', Validators.required],
       celularE:['', Validators.required],
+      estadoE : ['',Validators.required]
     });
 
 
@@ -101,6 +102,7 @@ export class UsuarioComponent {
         this.formEditarUsuario.get('emailE')?.setValue(res.email);
         this.formEditarUsuario.get('contraseniaE')?.setValue(res.contrasenia);
         this.formEditarUsuario.get('celularE')?.setValue(res.celular);
+        this.formEditarUsuario.get('estadoE')?.setValue(res.es_activo == true ? "1" : "0")
       },
       error: () => {
 
@@ -293,7 +295,8 @@ export class UsuarioComponent {
       celular: this.formEditarUsuario.get('celularE')?.value,
       id_rol : this.formEditarUsuario.get('rolE')?.value,
       numero_documento: this.formEditarUsuario.get('numero_documentoE')?.value ,
-      tipo_documento: this.formEditarUsuario.get('tipo_documentoE')?.value
+      tipo_documento: this.formEditarUsuario.get('tipo_documentoE')?.value,
+      es_activo: this.formEditarUsuario.get('estadoE')?.value == "1" ? true : false
     }
 
     this._usuarioService.PatchEditarUsuario(uuidUsuarioEditar,editUsuario).subscribe({
