@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Consultorio } from '../../Common/models/Consultorio.model';
 import { NestResponse } from '../../Common/models/NestResponse.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConsultorioService {
-  private readonly url = "http://localhost:3000/v1/api/consultorio";
+  private readonly url =  environment.apiUrl +"/v1/api/consultorio";
   constructor(
     private _httpClient : HttpClient,  
   ) { }

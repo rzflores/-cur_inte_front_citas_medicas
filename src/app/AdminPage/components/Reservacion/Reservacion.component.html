@@ -22,71 +22,25 @@
                                     <th scope="col">Nombre</th>
                                     <th scope="col">Apellido</th>
                                     <th scope="col">DNI</th>
-                                    <th scope="col">Estado</th>
-                                    <th scope="col">Acciones</th>
+                                    <!-- <th scope="col">Estado</th>
+                                    <th scope="col">Acciones</th> -->
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>26/11/2022</td>
-                                    <td>11:00 am</td>
-                                    <td>Jonathan</td>
-                                    <td>Paniagua Ccahuana</td>
-                                    <td>70030602</td>
-                                    <td>Pendiente</td>
-                                    <td>
-                                        <a class="btn btn-warning text-light btn-editar" href=""><i class="fas fa-pen"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>26/11/2022</td>
-                                    <td>11:00 am</td>
-                                    <td>Jonathan</td>
-                                    <td>Paniagua Ccahuana</td>
-                                    <td>70030602</td>
-                                    <td>Pendiente</td>
-                                    <td>
-                                        <a class="btn btn-warning text-light btn-editar" href=""><i class="fas fa-pen"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>26/11/2022</td>
-                                    <td>11:00 am</td>
-                                    <td>Jonathan</td>
-                                    <td>Paniagua Ccahuana</td>
-                                    <td>70030602</td>
-                                    <td>Pendiente</td>
-                                    <td>
-                                        <a class="btn btn-warning text-light btn-editar" href=""><i class="fas fa-pen"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>26/11/2022</td>
-                                    <td>11:00 am</td>
-                                    <td>Jonathan</td>
-                                    <td>Paniagua Ccahuana</td>
-                                    <td>70030602</td>
-                                    <td>Pendiente</td>
-                                    <td>
-                                        <a class="btn btn-warning text-light btn-editar" href=""><i class="fas fa-pen"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>26/11/2022</td>
-                                    <td>11:00 am</td>
-                                    <td>Jonathan</td>
-                                    <td>Paniagua Ccahuana</td>
-                                    <td>70030602</td>
-                                    <td>Pendiente</td>
-                                    <td>
-                                        <a class="btn btn-warning text-light btn-editar" href=""><i class="fas fa-pen"></i></a>
-                                    </td>
-                                </tr>
+                                @for (re of listaReservaciones$ | async; track re ; let index = $index) {
+                                    <tr> 
+                                        <td>{{ index + 1 }}</td>
+                                        <td>{{ re.fecha }}</td>
+                                        <td>{{ re.disponibilidad.descripcion }}</td>
+                                        <td>{{ re.paciente.usuario.nombre  }}</td>
+                                        <td>{{ re.paciente.usuario.apellido }}</td>
+                                        <td>{{ re.paciente.usuario.numero_documento }}</td>
+                                    </tr>
+                                  } @empty {
+                                    <tr> 
+                                        <td colspan="6"> Lista de reservaciones vacia</td>
+                                    </tr>
+                                  }
                             </tbody>
                         </table>
                     </div>

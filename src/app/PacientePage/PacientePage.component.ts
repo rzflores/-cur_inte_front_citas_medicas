@@ -29,7 +29,6 @@ export class PacientePageComponent implements OnInit {
 
   obtenerUsuarioLogeado(){
     this.usuarioLogin =  this._sharedService.obtenerUsuarioLogin() ?? null
-    console.log(this.usuarioLogin)
   }
 
 }

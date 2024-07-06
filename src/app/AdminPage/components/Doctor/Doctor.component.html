@@ -24,7 +24,7 @@
                                         <th scope="col">CMP </th>
                                         <th scope="col">Años de exp. </th>
                                         <th scope="col">Estado </th>
-                                        <th scope="col" colspan="2">Acciones</th>
+                                        <th scope="col" colspan="3">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -50,6 +50,11 @@
                                                 >
                                                         <i class="fas fa-trash"></i>
                                                 </button>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-warning text-light btn-editar"      
+                                                (click)="abrirModalDisponibilidad(doctor.ID_doctor)"                                       
+                                                ><i class="fas fa-calendar"></i></a>
                                             </td>
                                         </tr>
                                       } @empty {
@@ -309,6 +314,84 @@
                     </div>
                 </div>
 </div>
-         
-            
+<!------------------------------------------------------------------------------>
+<div style="left: 350px !important;" class="modal" id="modalDisponibilidad" tabindex="-1">
+    <div style="max-width: none !important;" class="modal-dialog">
+        <div style="width: 800px !important;text-align: center;" class="modal-content">
+            <div class="modal-header">
+                <h5 style="color: #5AC5C3;font-weight: bold;" class="modal-title">Asginar Disponibilidad</h5> 
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="margin: 20px 0px;">
+                    @for (dis of listaDisponibilidades; track dis ; let index = $index ) {
+                        @if( dis.grupo == 1 ){
+                            <div class="col-md-2 py-2">
+                                <a data-id="09:54 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
+                                    {{ dis.descripcion }}
+                                    <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="inlineCheckbox2"
+                                    [checked]="dis.active"
+                                    (change)="dis.active = !dis.active"
+                                    />
+                                </a>
+                            </div>
+                        }
+                        @if( dis.grupo == 2 ){
+                            <div class="col-md-2 py-2">
+                                <a data-id="09:54 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
+                                    {{ dis.descripcion }}
+                                    <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="inlineCheckbox2"
+                                    [checked]="dis.active"
+                                    (change)="dis.active = !dis.active"
+                                    />
+                                </a>
+                            </div>
+                        }
+                        @if( dis.grupo == 3 ){
+                            <div class="col-md-2 py-2">
+                                <a data-id="09:54 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
+                                    {{ dis.descripcion }}
+                                    <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="inlineCheckbox2"
+                                    [checked]="dis.active"
+                                    (change)="dis.active = !dis.active"
+                                    />
+                                </a>
+                            </div>
+                        }
+                      } @empty {
+                        <p></p>
+                      }
+                </div>
+                <!-- <div style="margin: 20px 0px;" class="row">
+                    <div class="col-md-2"><a data-id="09:54 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">9:54 am</a></div>
+                    <div class="col-md-2"><a data-id="10:06 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">10:06 am</a></div>
+                    <div class="col-md-2"><a data-id="10:18 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">10:18 am</a></div>
+                    <div class="col-md-2"><a data-id="10:42 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">10:42 am</a></div>
+                    <div class="col-md-2"><a data-id="10:54 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">10:54 am</a></div>
+                    <div class="col-md-2"><a data-id="11:06 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">11:06 am</a></div>
+                </div>
+                <div style="margin: 20px 0px;" class="row">
+                    <div class="col-md-2"><a data-id="11:15 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">11:15 am</a></div>
+                    <div class="col-md-2"><a data-id="11:20 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">11:20 am</a></div>
+                    <div class="col-md-2"><a data-id="11:30 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">11:30 am</a></div>
+                    <div class="col-md-2"><a data-id="11:40 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">11:40 am</a></div>
+                    <div class="col-md-2"><a data-id="11:50 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">11:50 am</a></div>
+                    <div class="col-md-2"><a data-id="12:00 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">12:00 pm</a></div>
+                </div> -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="actualizarDoctorDisponibilidad()" >Grabar</button>
+            </div>
+        </div>
+    </div>
         

@@ -1,3 +1,5 @@
+import { Doctor } from "./Doctor.model";
+import { Paciente } from "./Paciente.model";
 import { Rol } from "./Rol.model";
 
 export interface Usuario {
@@ -11,5 +13,7 @@ export interface Usuario {
     celular:     string;
     rol:         Rol;
     es_activo:   boolean;
+    doctor: Doctor;
+    paciente: Paciente;
 }
 

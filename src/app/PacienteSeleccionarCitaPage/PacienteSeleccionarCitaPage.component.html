@@ -1,6 +1,5 @@
 <html>
         <!-- 
-
             HttpSession sesion = request.getSession();
             Usuario usu = (Usuario) sesion.getAttribute("user");//se guarda el login
             if (usu != null) {//si se logueo bien ingresa
@@ -62,8 +61,9 @@
             <div class="container">
                 <form [formGroup]="formCrearReserva">
                     <div style="margin-top: 20px;" class="row">
+                        <!-- Informacion personal -->
                         <div class="col-md-4">
-                            <div style="border: 1px solid #5AC5C3;padding: 15px;border-radius: 30px;">
+                            <div id="infoAdicional" style="border: 1px solid #5AC5C3;padding: 15px;border-radius: 30px;">
                                 <h4 style=" color: #44469D; ">COMPLETAR LOS DATOS</h4>
                                 <div class="form-group">
                                     <label for="nombre" class="" style="color:#44469D;">Nombre del paciente</label>
@@ -118,7 +118,7 @@
                                         <input  type="text" 
                                                 class="form-control text-center" 
                                                 placeholder="" 
-                                                value=""
+                                                value="{{ ubicacionConsultorio }}"
                                                 formControlName="consultorioC"
                                                 >
                                     </div>
@@ -135,18 +135,17 @@
                                     </a>
                                 </div>
                             </div>
-
                         </div>
+                        <!-- Fecha y hora -->
                         <div class="col-md-4">
-
                             <div id="calendario" style="border: 1px solid #5AC5C3;padding: 15px;border-radius: 30px;">
                                 <h4 style="color: #44469D;">SELECCIONA LA FECHA DE TU DIA DE CITA</h4>
                                 <div>
                                     <app-custom-calendar-date (valorFechaEmit)="recibirFechaModelo($event)" >
-
                                     </app-custom-calendar-date>
                                     <div style="margin: 15px 0px 2px 0px;" class="form-group">
                                         <a  style="padding: 10px;background: #44469D;color: #ffff;border-radius: 10px;display: flex;justify-content: center;font-size: 20px;font-weight: bold;" 
+                                            (click)="obtenerDisponibilidadPorDoctor()"    
                                             class="text-decoration-none"  
                                             >
                                             <i style="margin-right: 5px;padding-top: 5px;" class="fas fa-search">
@@ -157,143 +156,27 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- turno -->
                         <div class="col-md-4">
                             <div id="Hora_cita" style="border: 1px solid #5AC5C3;padding: 15px;border-radius: 30px;">
                                 <h4 style="color: #44469D;">SELECCIONA LA HORA TU DIA DE CITA</h4>
                                 <div class="">
                                     <div  class="row d-flex flex-row justify-content-center py-2">
-                                        <div class="col-md-2">
-                                            <a  
-                                                style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" 
-                                                class="text-decoration-none btn-hora">
-                                                <input class="form-check-input" name="turnoC" [value]="1" formControlName="turnoC" 
-                                                       type="radio" >    
-                                                8:30 am
-                                            </a>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <a  
-                                                style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
-                                                <input class="form-check-input"  name="turnoC" [value]="2" formControlName="turnoC" 
-                                                       type="radio" >    
-                                                9:00 am
-                                            </a>
-                                        </div>
-                                        <!-- <div class="col-md-2">
-                                            <a data-id="09:06 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">    
-                                                9:30 am
-                                            </a>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <a data-id="09:18 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
-                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">    
-                                            10:00 am
-                                            </a>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <a data-id="09:30 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">    
-                                                10:30 am
-                                            </a>
-                                        </div> -->
+                                        @for( disDoc of  listaDisDoctor ; track disDoc ; let index = $index  ){
+                                            <div class="col-md-2">
+                                                <a  
+                                                    style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" 
+                                                    class="text-decoration-none btn-hora">
+                                                    <input class="form-check-input" 
+                                                           name="turnoC" 
+                                                           [value]="disDoc.ID_disponibilidad" 
+                                                           formControlName="turnoC" 
+                                                           type="radio" >    
+                                                    {{ disDoc.descripcion }}
+                                                </a>
+                                            </div>
+                                        }
                                     </div>
-                                    <!-- <div  class="row d-flex flex-row justify-content-center py-2">
-                                        <div class="col-md-2">
-                                            <a data-id="09:42 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">    
-                                                11:00 am
-                                            </a>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <a data-id="09:54 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">    
-                                                11:30 am
-                                            </a>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <a data-id="10:06 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">    
-                                                12:00 am
-                                            </a>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <a data-id="10:18 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">    
-                                                12:30 pm
-                                            </a>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <a data-id="10:42 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">    
-                                                1:00 am
-                                            </a>
-                                        </div>
-                                    </div> -->
-                                    <!-- <div  class="row d-flex flex-row justify-content-center py-2">
-                                        <div class="col-md-2">
-                                            <a data-id="10:54 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">    
-                                                1:30 am
-                                            </a>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <a data-id="11:06 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">    
-                                                2:00 am
-                                            </a>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <a data-id="11:15 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">    
-                                                2:30 am
-                                            </a>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <a data-id="11:20 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">    
-                                                3:00 am
-                                            </a>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <a data-id="11:30 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">    
-                                                3:30 am
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div  class="row d-flex flex-row justify-content-center py-2">
-                                        <div class="col-md-2">
-                                            <a data-id="11:40 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">    
-                                                4:00 am
-                                            </a>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <a data-id="11:50 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">    
-                                                4:30 am
-                                            </a>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <a data-id="12:00 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">    
-                                                5:00 pm
-                                            </a>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <a data-id="12:00 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">    
-                                                5:30 pm
-                                            </a>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <a data-id="12:00 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">    
-                                                6:00 pm
-                                            </a>
-                                        </div>
-                                    </div> -->
                                 </div>
 
                                 <div style="margin: 15px 0px 2px 0px;" class="form-group">
@@ -306,10 +189,6 @@
                                     Siguiente
                                     </a>
                                 </div>
-
-
-                                
-
                             </div>
                         </div>
                     </div>
@@ -328,7 +207,13 @@
                                     <p class="text-uppercase"><img style="width: 20px;padding-bottom: 5px;" src="../../assets/img/icon-medico.png" alt=""/> <span style="font-weight: bold">MEDICO:</span> <span id="medico-resumen"></span></p>
                                     <p><img style="width: 20px;padding-bottom: 5px;" src="../../assets/img/icon-fechahora.png" alt=""/> <span style="font-weight: bold">TURNO:</span> <span id="fecha_resumen"></span> <span id="hora-resumen"></span></p>
                                     <div style="display: flex;justify-content: end;margin: 10px"><a style="padding: 10px;background: #44469D;color: #ffff;border-radius: 10px;display: flex;justify-content: center;font-size: 20px;font-weight: bold;width: 120px;" class="text-decoration-none">S/ <span class="precio_btn"></span>.00</a></div>
-                                    <a style="padding: 10px;background: #44469D;color: #ffff;border-radius: 10px;display: flex;justify-content: center;font-size: 20px;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-reservar">Reservar y pagar</a>
+                                    <a 
+                                        style="padding: 10px;background: #44469D;color: #ffff;border-radius: 10px;display: flex;justify-content: center;font-size: 20px;font-weight: bold;cursor: pointer;" 
+                                        class="text-decoration-none btn-reservar"
+                                        (click)="grabarReserva()"
+                                        >
+                                        Reservar y pagar
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -336,51 +221,5 @@
                     </div>
                 </form>
             </div>
-            <!--MODAL-->
-            <div style="left: 350px !important;" class="modal" id="modalProcesar" tabindex="-1">
-                <div style="max-width: none !important;" class="modal-dialog">
-                    <div style="width: 800px !important;text-align: center;" class="modal-content">
-                        <div class="modal-header">
-                            <h5 style="color: #5AC5C3;font-weight: bold;" class="modal-title">Turnos disponibles</h5> 
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <label>Selecciona las horas disponibles</label><br>
-                            <label>Especialidad: <span id="especialidad"></span> - Fecha: <span id="fecha"></span></label>
-                            <p style="color: #5AC5C3;font-weight: bold;"><img style="width: 20px;padding-bottom: 5px;" src="img/icon-medico.png" alt=""/> <span id="medico"></span> Consultorio: <span id="consultorio"></span></p>
-
-                            <div style="margin: 20px 0px;" class="row">
-                                <div class="col-md-2"><a data-id="08:30 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">8:30 am</a></div>
-                                <div class="col-md-2"><a data-id="08:42 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">8:42 am</a></div>
-                                <div class="col-md-2"><a data-id="09:06 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">9:06 am</a></div>
-                                <div class="col-md-2"><a data-id="09:18 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">9:18 am</a></div>
-                                <div class="col-md-2"><a data-id="09:30 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">9:30 am</a></div>
-                                <div class="col-md-2"><a data-id="09:42 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">9:42 am</a></div>
-                            </div>
-                            <div style="margin: 20px 0px;" class="row">
-                                <div class="col-md-2"><a data-id="09:54 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">9:54 am</a></div>
-                                <div class="col-md-2"><a data-id="10:06 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">10:06 am</a></div>
-                                <div class="col-md-2"><a data-id="10:18 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">10:18 am</a></div>
-                                <div class="col-md-2"><a data-id="10:42 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">10:42 am</a></div>
-                                <div class="col-md-2"><a data-id="10:54 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">10:54 am</a></div>
-                                <div class="col-md-2"><a data-id="11:06 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">11:06 am</a></div>
-                            </div>
-                            <div style="margin: 20px 0px;" class="row">
-                                <div class="col-md-2"><a data-id="11:15 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">11:15 am</a></div>
-                                <div class="col-md-2"><a data-id="11:20 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">11:20 am</a></div>
-                                <div class="col-md-2"><a data-id="11:30 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">11:30 am</a></div>
-                                <div class="col-md-2"><a data-id="11:40 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">11:40 am</a></div>
-                                <div class="col-md-2"><a data-id="11:50 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">11:50 am</a></div>
-                                <div class="col-md-2"><a data-id="12:00 am" style="display: flex;padding: 10px 1px;background: #5AC5C3;color: #fff;border-radius: 10%;font-size: 14px;justify-content: center;font-weight: bold;cursor: pointer;" class="text-decoration-none btn-hora">12:00 pm</a></div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--FIN MODAL-->
         </div>
 </html>

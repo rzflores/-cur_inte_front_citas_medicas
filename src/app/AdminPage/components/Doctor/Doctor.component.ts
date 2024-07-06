@@ -11,6 +11,8 @@ import { Usuario } from '../../../Common/models/Usuario.model';
 import Swal from 'sweetalert2';
 import { ClassValidatorResponse } from '../../../Common/models/ClassValidatorResponse.model';
 import { getFieldStatus } from '../../../Common/helpers/UIHelpers.helpers';
+import { DisponibilidadService } from '../../services/Disponibilidad.service.ts.service';
+import { Disponibilidad } from '../../../Common/models/Disponibilidad.model';
 declare var bootstrap: any; 
 @Component({
   selector: 'app-doctor',
@@ -21,15 +23,23 @@ declare var bootstrap: any;
   ],
   templateUrl: './Doctor.component.html',
   styleUrl: './Doctor.component.css',
-  providers: [DoctorService,EspecialidadService,UsuarioService]
+  providers: [DoctorService,
+              EspecialidadService,
+              UsuarioService,
+              DisponibilidadService
+            ]
 })
 export class DoctorComponent { 
   listaEspecialidades$ : Observable<Especialidad[]> = of([]);
   listaDoctores$ : Observable<Doctor[]> = of([]);
+  listaDisponibilidades : Disponibilidad[] = [];
+  cadenaDisponibilidadesDoctor : string[] = [];
 
   private _doctorService = inject(DoctorService);
   private _especialidadService = inject(EspecialidadService);
   private _usuarioService = inject(UsuarioService);
+  private _disponibilidadService = inject(DisponibilidadService);
+
 
   formCrearMedico : FormGroup ;
   formEditarMedico : FormGroup ;
@@ -38,6 +48,8 @@ export class DoctorComponent {
   private _modalCrear : any ;
   private _modalEditarElement : any ;
   private _modalEditar : any ;
+  private _modalDisponibilidadElement : any ;
+  private _modalDisponibilidad : any ;
 
   private readonly uuidRolDoctor : string = '0a22c00b-1706-11ef-9a31-0242ac150002';
 
@@ -75,11 +87,14 @@ export class DoctorComponent {
   ngOnInit(): void {
     this.obtenerListaDoctores();
     this.obtenerListaEspecialidades();
+    this.obtenerDisponiblidades();
 
     this._modalCrearElement = document.getElementById('modalCrear');
     this._modalCrear = new bootstrap.Modal(this._modalCrearElement);
     this._modalEditarElement = document.getElementById('modalEditar');
     this._modalEditar = new bootstrap.Modal(this._modalEditarElement);
+    this._modalDisponibilidadElement = document.getElementById('modalDisponibilidad');
+    this._modalDisponibilidad = new bootstrap.Modal(this._modalDisponibilidadElement);
   }
 
   obtenerListaEspecialidades(){
@@ -88,6 +103,14 @@ export class DoctorComponent {
   obtenerListaDoctores(){
     this.listaDoctores$ = this._doctorService.GetDoctores();
   }
+  obtenerDisponiblidades(){
+    this._disponibilidadService.GetDisponibilidad().subscribe({
+      next: (res) => {
+        this.listaDisponibilidades = res.map(item => ({ ...item, active: false }));
+      }
+    })
+  }
+
 
   abrirModalCrearDoctor(){
     this._modalCrear.show();
@@ -96,6 +119,10 @@ export class DoctorComponent {
 
   abrirModalEditarDoctor(uuid:string){
      this._modalEditar.show()
+     this.obtenerDoctorSeleccionado(uuid);
+  }
+
+  obtenerDoctorSeleccionado(uuid : string){
     this._doctorService.GetDoctorId(uuid).subscribe({
       next:(res) =>{
         this.formEditarMedico.get('IdMedicoEditar')?.setValue(res.ID_doctor);
@@ -240,8 +267,6 @@ export class DoctorComponent {
       es_activo: this.formEditarMedico.get('estadoE')?.value == "1" ? true : false,
       id_usuario : this.formEditarMedico.get('IdUsuarioEditar')?.value,
     }
-    console.log(uuidDoctorEditar)
-    console.log(editDoctor)
 
     this._doctorService.PatchEditarDoctor(uuidDoctorEditar,editDoctor).subscribe({
       next: (res) => {
@@ -276,5 +301,66 @@ export class DoctorComponent {
     return getFieldStatus(field,this.formEditarMedico)
   }
 
+  abrirModalDisponibilidad(uuid:string){
+    this._modalDisponibilidad.show()
+    this.obtenerDisponiblidadDoctor(uuid);
+   
+    
+  }
+
+  obtenerDisponiblidadDoctor(uuid: string){
+    this._disponibilidadService.PostDisponibilidadPorDoctor(uuid).subscribe({
+      next: (res) => {
+        this.cadenaDisponibilidadesDoctor = res.map(item => item.ID_disponibilidad);
+        this.listaDisponibilidades = this.listaDisponibilidades.map(dis => {
+          if (this.cadenaDisponibilidadesDoctor.includes(dis.ID_disponibilidad)) {
+            return { ...dis, active: true };
+          }
+          return dis;
+        });
+      }
+    })
+    this.obtenerDoctorSeleccionado(uuid);
+  }
+
+  actualizarDoctorDisponibilidad(){
+    let cadenaActualizarDisponibilidad: string[] = this.listaDisponibilidades
+      .filter(item => item.active)
+      .map(item => item.ID_disponibilidad);
+    let cadenaIDs = cadenaActualizarDisponibilidad.join(',');
+    let uuidDoctorEditar = this.formEditarMedico.get('IdMedicoEditar')?.value;
+    let editDoctorDisponibilidad  = {      
+      anios_experiencia: Number(this.formEditarMedico.get('anios_experianciaE')?.value),
+      codigo_colegio : this.formEditarMedico.get('codigo_colegioE')?.value ,   
+      id_especialidad: this.formEditarMedico.get('especialidadE')?.value,
+      es_activo: this.formEditarMedico.get('estadoE')?.value == "1" ? true : false,
+      id_usuario : this.formEditarMedico.get('IdUsuarioEditar')?.value,
+      ids_disponibilidad : cadenaIDs
+    }
+    this._doctorService.PatchEditarDoctor(uuidDoctorEditar,editDoctorDisponibilidad).subscribe({
+      next: (res) => {
+        if(res){
+          Swal.fire({
+            title: 'Exito',          
+            html: `<p>Asignada la disponibilidad Correctamente.</p>`,
+            icon: 'success',          
+          })
+          this._modalDisponibilidad.hide();
+          this.obtenerDisponiblidades();
+        }
+      },
+      error: (err) => {
+        Swal.fire({
+          title: 'Error',          
+          html: '<p>Error al asignar la disponibilidad.</b></p>',
+          icon: 'error',          
+        });
+      },
+      complete: () => {
+        
+      }
+    })
+
+  }
 
 }
