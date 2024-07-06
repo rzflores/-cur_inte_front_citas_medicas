@@ -49,7 +49,15 @@ export class PacienteSeleccionarCitaPageComponent {
   ubicacionConsultorio: string = "";
   usuarioPaciente: Usuario | null  = null ;
 
+  infoPersonalDisable : boolean = false;
+  calendarioDisable: boolean = false;
+  turnoDisable : boolean = false;
+
   public usuarioLogin! : UsuarioLogin | null;
+
+  litEspecialidad: string = "";
+  litMedico:string = "";
+  litTurno:string = "";
  
   private _especialidadService = inject(EspecialidadService);
   private _doctorService = inject(DoctorService);
@@ -136,7 +144,9 @@ export class PacienteSeleccionarCitaPageComponent {
     })
     
   }
-
+  seleccionarInfoPersonal(){
+    this.infoPersonalDisable = true;
+  }
   obtenerConsultorioPorDoctor(){
     let idDoctor = this.formCrearReserva.get('doctorC')?.value;
     this._consultorioService.PostConsultorioPorDoctor(idDoctor).subscribe({
@@ -170,11 +180,22 @@ export class PacienteSeleccionarCitaPageComponent {
         this.listaDisDoctor = res;
       }
     });
+    this.calendarioDisable = true;
   }
   seleccionarTurno(){
     this.formCrearReserva.get('turnoC')?.valueChanges.subscribe(valor => {
       console.log('Valor seleccionado:', valor);
     });
+
+    this.turnoDisable = true;
+
+    let turnoForm = this.formCrearReserva.get('turnoC')?.value;
+    let medicoForm =this.formCrearReserva.get('doctorC')?.value;
+  
+    this.litEspecialidad = this.formCrearReserva.get('especialidadC')?.value;
+    this.litMedico = this.listaDoctores.find( item => item === medicoForm )?.usuario.nombre ?? "";;
+    this.litTurno = this.listaDisDoctor.find( item => item === turnoForm )?.descripcion ?? "";
+    
   }
 
   grabarReserva(){

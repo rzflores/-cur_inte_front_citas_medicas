@@ -14,3 +14,8 @@ opacity: .8;
 
 box-shadow: 5px 5px 40px 30px rgba(139,139,139,0.7), inset 0px 0px 0px 46px rgba(139,139,139,0.64);
 }
+
+.CustomDisabled {
+  pointer-events: none; 
+  opacity: 0.5; 
+}

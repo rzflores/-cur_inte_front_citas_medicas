@@ -63,7 +63,10 @@
                     <div style="margin-top: 20px;" class="row">
                         <!-- Informacion personal -->
                         <div class="col-md-4">
-                            <div id="infoAdicional" style="border: 1px solid #5AC5C3;padding: 15px;border-radius: 30px;">
+                            <div id="infoAdicional" 
+                                style="border: 1px solid #5AC5C3;padding: 15px;border-radius: 30px;"
+                                [ngClass]="{'CustomDisable':infoPersonalDisable}"
+                                >
                                 <h4 style=" color: #44469D; ">COMPLETAR LOS DATOS</h4>
                                 <div class="form-group">
                                     <label for="nombre" class="" style="color:#44469D;">Nombre del paciente</label>
@@ -128,6 +131,8 @@
                                 <div style="margin: 15px 0px 2px 0px;" class="form-group">
                                     <a  style="padding: 10px;background: #44469D;color: #ffff;border-radius: 10px;display: flex;justify-content: center;font-size: 20px;font-weight: bold;" 
                                         class="text-decoration-none"  
+                                        (click)="seleccionarInfoPersonal()"
+                                        [ngClass]="{'CustomDisabled':infoPersonalDisable}"  
                                         >
                                         <i style="margin-right: 5px;padding-top: 5px;" class="fas fa-search">
                                         </i>
@@ -145,7 +150,8 @@
                                     </app-custom-calendar-date>
                                     <div style="margin: 15px 0px 2px 0px;" class="form-group">
                                         <a  style="padding: 10px;background: #44469D;color: #ffff;border-radius: 10px;display: flex;justify-content: center;font-size: 20px;font-weight: bold;" 
-                                            (click)="obtenerDisponibilidadPorDoctor()"    
+                                            (click)="obtenerDisponibilidadPorDoctor()"
+                                            [ngClass]="{'CustomDisabled':calendarioDisable}"      
                                             class="text-decoration-none"  
                                             >
                                             <i style="margin-right: 5px;padding-top: 5px;" class="fas fa-search">
@@ -182,7 +188,8 @@
                                 <div style="margin: 15px 0px 2px 0px;" class="form-group">
                                     <a  style="padding: 10px;background: #44469D;color: #ffff;border-radius: 10px;display: flex;justify-content: center;font-size: 20px;font-weight: bold;" 
                                         class="text-decoration-none" 
-                                        (click)="seleccionarTurno()" 
+                                        (click)="seleccionarTurno()"
+                                        [ngClass]="{'CustomDisabled':turnoDisable}" 
                                         >
                                         <i style="margin-right: 5px;padding-top: 5px;" class="fas fa-search">
                                         </i>
@@ -199,13 +206,10 @@
                                 <div style="border: 1px solid #5AC5C3;padding: 15px;border-radius: 30px;">
                                     <h4 style="color: #44469D;">Resumen de Reserva</h4>
                                     <!-- <input type="hidden" class='codigousuario' name="codigousuario" value=${user.getIdusuario()}> -->
-                                    <input type="hidden" class='codigomedico' name='codigomedico' value="" >
-                                    <input type="hidden" class='id_especialidad' name='id_especialidad' value="" >
-                                    <input type="hidden" class='precio' name='precio' value="" >
                                     <!-- <p class="text-uppercase"><img style="width: 20px;padding-bottom: 5px;" src="img/icon-nombre.png" alt=""/> <span style="font-weight: bold">PACIENTE:</span> <span id="paciente-resumen">${user.getNombre()} ${user.getApellido()}</span></p> -->
-                                    <p class="text-uppercase"><img style="width: 20px;padding-bottom: 5px;" src="../../assets/img/icon-especialidad.png" alt=""/> <span style="font-weight: bold">ESPECIALIDAD:</span> <span id="especialidad_resumen"></span></p>
-                                    <p class="text-uppercase"><img style="width: 20px;padding-bottom: 5px;" src="../../assets/img/icon-medico.png" alt=""/> <span style="font-weight: bold">MEDICO:</span> <span id="medico-resumen"></span></p>
-                                    <p><img style="width: 20px;padding-bottom: 5px;" src="../../assets/img/icon-fechahora.png" alt=""/> <span style="font-weight: bold">TURNO:</span> <span id="fecha_resumen"></span> <span id="hora-resumen"></span></p>
+                                    <p class="text-uppercase"><img style="width: 20px;padding-bottom: 5px;" src="../../assets/img/icon-especialidad.png" alt=""/> <span style="font-weight: bold">ESPECIALIDAD:</span> <span id="especialidad_resumen">{{litEspecialidad}}</span></p>
+                                    <p class="text-uppercase"><img style="width: 20px;padding-bottom: 5px;" src="../../assets/img/icon-medico.png" alt=""/> <span style="font-weight: bold">MEDICO:</span> <span id="medico-resumen">{{litMedico}}</span></p>
+                                    <p><img style="width: 20px;padding-bottom: 5px;" src="../../assets/img/icon-fechahora.png" alt=""/> <span style="font-weight: bold">TURNO:</span> <span id="fecha_resumen"></span> <span id="hora-resumen">{{litTurno}}</span></p>
                                     <div style="display: flex;justify-content: end;margin: 10px"><a style="padding: 10px;background: #44469D;color: #ffff;border-radius: 10px;display: flex;justify-content: center;font-size: 20px;font-weight: bold;width: 120px;" class="text-decoration-none">S/ <span class="precio_btn"></span>.00</a></div>
                                     <a 
                                         style="padding: 10px;background: #44469D;color: #ffff;border-radius: 10px;display: flex;justify-content: center;font-size: 20px;font-weight: bold;cursor: pointer;" 
