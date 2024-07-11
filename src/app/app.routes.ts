@@ -13,11 +13,14 @@ import { RolComponent } from './AdminPage/components/Rol/Rol.component';
 import { UsuarioComponent } from './AdminPage/components/Usuario/Usuario.component';
 import { AuthGuard } from './Common/guards/login-usuario.guard';
 import { PacienteSeleccionarCitaPageComponent } from './PacienteSeleccionarCitaPage/PacienteSeleccionarCitaPage.component';
+import { PacienteCitasComponent } from './PacienteCitas/PacienteCitas.component';
+import { EmfermeraComponent } from './AdminPage/components/Emfermera/Emfermera.component';
 
 export const routes: Routes = [
     { path : 'main' , component: MainPageComponent },
     { path : 'paciente' , component: PacientePageComponent },
     { path : 'paciente/selecionar-cita' , component: PacienteSeleccionarCitaPageComponent },
+    { path : 'paciente/citas' , component: PacienteCitasComponent },
     { path : 'registro' , component: RegistroPageComponent },
     { path : 'recuperar' , component: LoginPageComponent },
     { path : 'admin' , 
@@ -31,6 +34,7 @@ export const routes: Routes = [
             { path: 'paciente', component: PacienteComponent },
             { path: 'rol', component:  RolComponent },
             { path: 'usuario', component:  UsuarioComponent },
+            { path: 'emfermera', component:  EmfermeraComponent },
         ]
     },
     { path : 'login' , component : LoginPageComponent },

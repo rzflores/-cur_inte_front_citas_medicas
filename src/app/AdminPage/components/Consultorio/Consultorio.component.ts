@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Consultorio } from '../../../Common/models/Consultorio.model';
 import { Especialidad } from '../../../Common/models/Especialidad.model';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { ConsultorioService } from '../../services/Consultorio.service';
 import { EspecialidadService } from '../../services/Especialidad.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -12,6 +12,8 @@ import { DoctorService } from '../../services/Doctor.service';
 import { NestResponse } from '../../../Common/models/NestResponse.model';
 import { Doctor } from '../../../Common/models/Doctor.model';
 import { ClassValidatorResponse } from '../../../Common/models/ClassValidatorResponse.model';
+import { EmfermeraService } from '../../services/Emfermera.service';
+import { Emfermera } from '../../../Common/models/Emfermera.model';
 declare var bootstrap: any; 
 
 @Component({
@@ -21,7 +23,7 @@ declare var bootstrap: any;
     CommonModule,
     ReactiveFormsModule
   ],
-  providers: [ ConsultorioService , EspecialidadService , DoctorService ],
+  providers: [ ConsultorioService , EspecialidadService , DoctorService , EmfermeraService ],
   templateUrl: './Consultorio.component.html',
   styleUrl: './Consultorio.component.css',
 })
@@ -29,10 +31,13 @@ export class ConsultorioComponent {
   listaEspecialidades$ : Observable<Especialidad[]> = of([]);
   listaConsultorios$ : Observable<Consultorio[]> = of([]);
   listaDoctores : Doctor[] = [];
+  listaEmfermeras : Emfermera[] = [];
+  listaEmfermerasEdit : Emfermera[] = [];
 
 
   private _consultorioService = inject(ConsultorioService);
   private _especialidadService = inject(EspecialidadService);
+  private _emfermeraService = inject(EmfermeraService);
   private _doctorService = inject(DoctorService);
 
 
@@ -51,6 +56,7 @@ export class ConsultorioComponent {
       ubicacionC: ['', [Validators.required]],
       especialidadC: ['', [Validators.required]],
       doctorC: ['', [Validators.required]],
+      emfermeraC : ['', [Validators.required]],
     });
 
 
@@ -59,6 +65,7 @@ export class ConsultorioComponent {
       ubicacionE: ['', [Validators.required, Validators.email]],
       especialidadE: ['', Validators.required],
       doctorE : ['', Validators.required],
+      emfermeraE : ['', Validators.required],
       estadoE:['', Validators.required],
     });
 
@@ -67,6 +74,7 @@ export class ConsultorioComponent {
    
     this.obtenerListaConsultorios();
     this.obtenerListaEspecialidades();
+    this.obtenerListaEmfermeras();
 
     this._modalCrearElement = document.getElementById('modalCrear');
     this._modalCrear = new bootstrap.Modal(this._modalCrearElement);
@@ -79,6 +87,15 @@ export class ConsultorioComponent {
 
   obtenerListaEspecialidades(){
     this.listaEspecialidades$ = this._especialidadService.GetEspecialidades();
+  }
+  obtenerListaEmfermeras(){
+    this._emfermeraService.GetEmfemeras().subscribe({
+      next : (res) => {
+        this.listaEmfermerasEdit = res;
+        this.listaEmfermeras =  res.filter( item => item.es_disponible === false)
+      }
+    })
+      
   }
   obtenerListaConsultorios(){
     this.listaConsultorios$ = this._consultorioService.GetConsultorio();
@@ -95,6 +112,7 @@ export class ConsultorioComponent {
         this.formEditarConsultorio.get('especialidadE')?.setValue(res.especialidad.ID_especialidad);
         this.obtenerDoctoresPorEspecialidad('Editar')
         this.formEditarConsultorio.get('doctorE')?.setValue(res.doctor.ID_doctor);
+        this.formEditarConsultorio.get('emfermeraE')?.setValue(res.emfermera.ID_emfermera);
         this.formEditarConsultorio.get('estadoE')?.setValue( res.es_activo == true ? "1" : "0");
       },
       error: () => {
@@ -173,6 +191,7 @@ export class ConsultorioComponent {
         ubicacion: this.formCrearConsultorio.get('ubicacionC')?.value,
         id_doctor : this.formCrearConsultorio.get('doctorC')?.value,
         id_especialidad : this.formCrearConsultorio.get('especialidadC')?.value,
+        id_emfermera : this.formCrearConsultorio.get('emfermeraC')?.value,
       }
       console.log(newConsultorio)
       //crear consultorio
@@ -233,6 +252,7 @@ export class ConsultorioComponent {
       ubicacion: this.formEditarConsultorio.get('ubicacionE')?.value,
       id_doctor : this.formEditarConsultorio.get('doctorE')?.value ,   
       id_especialidad: this.formEditarConsultorio.get('especialidadE')?.value,
+      id_emfermera: this.formEditarConsultorio.get('emfermeraE')?.value,
       es_activo: this.formEditarConsultorio.get('estadoE')?.value == "1" ? true : false,
     }
     this._consultorioService.PatchEditarConsultorio(uuidConsultorioEditar,editConsultorio).subscribe({

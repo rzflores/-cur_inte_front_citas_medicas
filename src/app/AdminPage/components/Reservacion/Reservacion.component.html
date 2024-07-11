@@ -20,11 +20,10 @@
                                     <th scope="col">Fecha</th>
                                     <th scope="col">Hora</th>
                                     <th scope="col">Medico</th>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Apellido</th>
+                                    <th scope="col">Paciente</th>
                                     <th scope="col">DNI</th>
-                                    <!-- <th scope="col">Estado</th>
-                                    <th scope="col">Acciones</th> -->
+                                    <th scope="col">Estado</th>
+                                    <th scope="col">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -34,13 +33,18 @@
                                         <td>{{ re.fecha }}</td>
                                         <td>{{ re.disponibilidad.descripcion }}</td>
                                         <td>{{ re.doctor.usuario.nombre }}</td>
-                                        <td>{{ re.paciente.usuario.nombre  }}</td>
-                                        <td>{{ re.paciente.usuario.apellido }}</td>
+                                        <td>{{ re.paciente.usuario.nombre  }} {{ re.paciente.usuario.apellido }}</td>
                                         <td>{{ re.paciente.usuario.numero_documento }}</td>
+                                        <td>{{ re.estado === 0  ? 'Pendiente' : 'Completada' }}</td>
+                                        <td>
+                                            <a  class="btn btn-warning text-light btn-editar"
+                                                (click)="cambiarEstadoReservacion(re.ID_reservacion)"    
+                                            ><i class="fas fa-rotate"></i></a>
+                                        </td>
                                     </tr>
                                   } @empty {
                                     <tr> 
-                                        <td colspan="6"> Lista de reservaciones vacia</td>
+                                        <td colspan="8"> Lista de reservaciones vacia</td>
                                     </tr>
                                   }
                             </tbody>

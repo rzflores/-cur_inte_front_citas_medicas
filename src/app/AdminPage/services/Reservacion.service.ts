@@ -18,4 +18,13 @@ export class ReservacionService {
   PostCrearReservacion(reservacion : any) : Observable<Reservacion|NestResponse>{
     return this._httpClient.post<Reservacion|NestResponse>(this.url,reservacion)
   }
+
+
+  PostObtenerReservacionPorPaciente(uuidPaciente : any) :  Observable<Reservacion[]>{
+    return this._httpClient.post<Reservacion[]>(`${this.url}/paciente/${uuidPaciente}`,{})
+  }
+
+  PostChangeStateReservacion(uuidReservacion:string) :  Observable<Reservacion>{
+    return this._httpClient.post<Reservacion>(`${this.url}/changeState/${uuidReservacion}`,{})
+  }
 }

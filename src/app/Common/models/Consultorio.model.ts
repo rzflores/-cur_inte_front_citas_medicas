@@ -1,4 +1,5 @@
 import { Doctor } from "./Doctor.model";
+import { Emfermera } from "./Emfermera.model";
 import { Especialidad } from "./Especialidad.model";
 
 export interface Consultorio {
@@ -9,4 +10,5 @@ export interface Consultorio {
     es_activo:          boolean;
     especialidad:       Especialidad;
     doctor:             Doctor;
+    emfermera :         Emfermera;
 }

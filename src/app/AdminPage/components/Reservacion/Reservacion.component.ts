@@ -5,6 +5,7 @@ import { Reservacion } from '../../../Common/models/Reservacion.model';
 import { Observable, of } from 'rxjs';
 import { UsuarioLogin } from '../../../Common/models/UsuarioLogin.model';
 import { SharedService } from '../../../Common/api/Shared.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-reservacion',
@@ -39,5 +40,20 @@ export class ReservacionComponent implements OnInit {
       this.uuidUsuario = this.usuarioLogin.rol.nombre === "Administrador" ? "all" : this.usuarioLogin.ID_usuario
     }
     this.listaReservaciones$ = this._reservacionService.GetReservaciones(this.uuidUsuario);
+  }
+
+
+  cambiarEstadoReservacion(uuid:string){
+    this._reservacionService.PostChangeStateReservacion(uuid).subscribe({
+      next : (res) => {
+        Swal.fire({
+          title: 'Exito',          
+          html: `<p>Se cambio el estado de la Reserva Correctamente.</p>`,
+          icon: 'success',          
+        })
+
+        this.obtenerListaResevaciones();
+      }
+    });
   }
  }

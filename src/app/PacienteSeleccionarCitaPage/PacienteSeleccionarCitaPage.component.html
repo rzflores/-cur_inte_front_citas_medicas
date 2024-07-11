@@ -34,22 +34,21 @@
                             <li class="nav-item">
                                 <a style="color:#44469D; font-weight: bold" class="nav-link textomenu">RESULTADOS COVID 19</a>
                             </li>
+                         
                             <!--Dropdown-->
-                            <!-- <c:if test="${user != null}">
                                 <ul class="navbar-nav">
                                     <li class="nav-item dropdown">
                                         <a style="color:#44469D; font-weight: bold;border: 1px solid;border-radius: 10px" class="nav-link dropdown-toggle textomenu" href="#" id="navbarDropdownMenuLink"
                                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa fa-user"></i> ${user.getNombre()} ${user.getApellido()}
+                                            <!-- <i class="fa fa-user"></i> ${user.getNombre()} ${user.getApellido()} -->
                                         </a>
                                         <ul style="top: 32px;right: 30px;" class="dropdown-menu dropdown-menu-end text-center bg-light text-Dark"
                                             aria-labelledby="navbarDropdownMenuLink">
-                                            <li><a style="color: black !important;" class="dropdown-item text-Dark" href="UsuarioLoginServlet?accion=verHistorial">Historial de Citas</a></li>
-                                            <li><a style="color: black !important;" class="dropdown-item text-Dark" href="UsuarioLoginServlet?accion=salir">Salir</a></li>
+                                            <li><a style="color: black !important;" class="dropdown-item text-Dark" routerLink="/paciente/citas">Historial de Citas</a></li>
+                                            <li><a style="color: black !important;" class="dropdown-item text-Dark" routerLink="/login">Salir</a></li>
                                         </ul>
                                     </li>
                                 </ul>
-                            </c:if> -->
                         </ul>
                     </div>
                 </div>
@@ -85,7 +84,7 @@
                                         formControlName="especialidadC"
                                         placeholder="Selecionar..."
                                         >
-                                        @for (especialidad of listaEspecialidades$ | async; track especialidad ; let index = $index) {
+                                        @for (especialidad of listaEspecialidades ; track especialidad ; let index = $index) {
                                             <option value="{{ especialidad.ID_especialidad }}">{{especialidad.nombre_especialidad}}</option>
                                         } @empty {
                                             <option>Sin datos</option>
@@ -210,20 +209,24 @@
                                     <p class="text-uppercase"><img style="width: 20px;padding-bottom: 5px;" src="../../assets/img/icon-especialidad.png" alt=""/> <span style="font-weight: bold">ESPECIALIDAD:</span> <span id="especialidad_resumen">{{litEspecialidad}}</span></p>
                                     <p class="text-uppercase"><img style="width: 20px;padding-bottom: 5px;" src="../../assets/img/icon-medico.png" alt=""/> <span style="font-weight: bold">MEDICO:</span> <span id="medico-resumen">{{litMedico}}</span></p>
                                     <p><img style="width: 20px;padding-bottom: 5px;" src="../../assets/img/icon-fechahora.png" alt=""/> <span style="font-weight: bold">TURNO:</span> <span id="fecha_resumen"></span> <span id="hora-resumen">{{litTurno}}</span></p>
-                                    <div style="display: flex;justify-content: end;margin: 10px"><a style="padding: 10px;background: #44469D;color: #ffff;border-radius: 10px;display: flex;justify-content: center;font-size: 20px;font-weight: bold;width: 120px;" class="text-decoration-none">S/ <span class="precio_btn"></span>.00</a></div>
-                                    <a 
-                                        style="padding: 10px;background: #44469D;color: #ffff;border-radius: 10px;display: flex;justify-content: center;font-size: 20px;font-weight: bold;cursor: pointer;" 
-                                        class="text-decoration-none btn-reservar"
-                                        (click)="grabarReserva()"
-                                        >
-                                        Reservar y pagar
-                                    </a>
+                                    <div style="display: flex;justify-content: end;margin: 10px"><a style="padding: 10px;background: #44469D;color: #ffff;border-radius: 10px;display: flex;justify-content: center;font-size: 20px;font-weight: bold;width: 120px;" class="text-decoration-none">S/ <span class="precio_btn"></span>{{ litPrecio }}</a></div>
+                                        <a 
+                                            style="padding: 10px;background: #44469D;color: #ffff;border-radius: 10px;display: flex;justify-content: center;font-size: 20px;font-weight: bold;cursor: pointer;" 
+                                            class="text-decoration-none btn-reservar"
+                                            (click)="grabarReserva()"
+                                            >
+                                            Reservar y pagar
+                                        </a>
                                 </div>
+
+                               
                             </div>
                         </div>
 
                     </div>
                 </form>
             </div>
+
+          
         </div>
 </html>

@@ -20,6 +20,7 @@
                                     <th scope="col">Ubicación</th>
                                     <th scope="col">Médico</th>
                                     <th scope="col">Especialidad</th>
+                                    <th scope="col">Emfermera</th>
                                     <th scope="col">Estado</th>
                                     <th scope="col" colspan="2">Acciones</th>
                                 </tr>
@@ -31,6 +32,7 @@
                                         <td>{{ con.ubicacion }}</td>
                                         <td>{{ con.doctor.usuario.nombre }}</td>
                                         <td>{{ con.especialidad.nombre_especialidad }}</td>
+                                        <td>{{ con.emfermera.nombres }} {{ con.emfermera.apellidos }}</td>
                                         <td>{{ (con.es_activo) ? 'Activo' : 'Inactivo' }}</td> 
                                         <td>
                                             <a  class="btn btn-warning text-light btn-editar"
@@ -80,7 +82,7 @@
                                                 class="form-control" 
                                                 name="nombre" 
                                                 value="" 
-                                                placeholder="Jhon Doe"
+                                                placeholder=""
                                                 formControlName="ubicacionC"
                                                 [ngClass]="{'is-invalid': obtenerFormCrearConsultorioError('ubicacionC') === 'Invalid'}"
                                                 >
@@ -129,6 +131,26 @@
                                     <p class="text-danger pt-1" *ngIf="obtenerFormCrearConsultorioError('doctorC') === 'Invalid'">
                                         Medico es requerido.
                                     </p> 
+                                     <!-- Grupo: Emfermera -->
+                                     <div class="form-group">
+                                        <label for="cboEmfermera">Emfermera/o</label>
+                                        <select class="form-select" 
+                                            name="cboEmfermera" 
+                                            id="cboEmfermera"
+                                            placeholder ="Selecionar..."
+                                            formControlName="emfermeraC"
+                                            [ngClass]="{'is-invalid': obtenerFormCrearConsultorioError('emfermeraC') === 'Invalid'}"
+                                            >
+                                            @for (emfer of listaEmfermeras ; track emfer ; let index = $index) {
+                                                <option value="{{ emfer.ID_emfermera }}">{{ emfer.nombres }} {{ emfer.apellidos }}</option>
+                                            } @empty {
+                                                <option>Sin datos</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <p class="text-danger pt-1" *ngIf="obtenerFormCrearConsultorioError('emfermeraC') === 'Invalid'">
+                                        Emfermera/o es requerido.
+                                    </p> 
                                 </div>
                             </div>
                         </div>
@@ -160,7 +182,7 @@
                                                 class="form-control" 
                                                 name="nombre" 
                                                 value="" 
-                                                placeholder="Jhon Doe"
+                                                placeholder=""
                                                 formControlName="ubicacionE"
                                                 [ngClass]="{'is-invalid': obtenerFormCrearConsultorioError('ubicacionC') === 'Invalid'}"
                                                 >
@@ -208,6 +230,26 @@
                                     </div>
                                     <p class="text-danger pt-1" *ngIf="obtenerFormCrearConsultorioError('doctorC') === 'Invalid'">
                                         Medico es requerido.
+                                    </p> 
+                                      <!-- Grupo: Emfermera -->
+                                      <div class="form-group">
+                                        <label for="cboEmfermera">Emfermera/o</label>
+                                        <select class="form-select" 
+                                            name="cboEmfermera" 
+                                            id="cboEmfermera"
+                                            placeholder ="Selecionar..."
+                                            formControlName="emfermeraE"
+                                            [ngClass]="{'is-invalid': obtenerFormCrearConsultorioError('emfermeraE') === 'Invalid'}"
+                                            >
+                                            @for (emfer of listaEmfermerasEdit ; track emfer ; let index = $index) {
+                                                <option value="{{ emfer.ID_emfermera }}">{{ emfer.nombres }} {{ emfer.apellidos }}</option>
+                                            } @empty {
+                                                <option>Sin datos</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <p class="text-danger pt-1" *ngIf="obtenerFormCrearConsultorioError('emfermeraE') === 'Invalid'">
+                                        Emfermera/o es requerido.
                                     </p> 
                                     <!-- Grupo: Estado -->
                                     <div class="form-group">

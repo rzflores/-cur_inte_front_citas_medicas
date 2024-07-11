@@ -10,5 +10,6 @@ export interface Reservacion {
     doctor: Doctor;
     consultorio: Consultorio;
     ID_reservacion: string;
+    estado: number;
     disponibilidad: Disponibilidad
 }

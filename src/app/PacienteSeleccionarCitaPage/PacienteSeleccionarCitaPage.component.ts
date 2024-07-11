@@ -22,14 +22,33 @@ import { Reservacion } from '../Common/models/Reservacion.model';
 import { UsuarioService } from '../Common/api/Usuario.service';
 import { Paciente } from '../Common/models/Paciente.model';
 import { Usuario } from '../Common/models/Usuario.model';
+import { CulquiService } from './Culqui.service';
+import { Router, RouterModule } from '@angular/router';
 declare var bootstrap: any;
+
+
+interface CulqiConfig {
+  publicKey: string;
+  settings(options: any): void;
+  options(options: any): void;
+  open(): void;
+  // Agrega otras propiedades o métodos de Culqi que necesites utilizar
+}
+
+declare global {
+  interface Window {
+    Culqi: CulqiConfig;
+  }
+}
+
 @Component({
   selector: 'app-paciente-seleccionar-cita-page',
   standalone: true,
   imports: [
     CommonModule,
     CustomCalendarDateComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule, 
   ],
   templateUrl: './PacienteSeleccionarCitaPage.component.html',
   styleUrl: './PacienteSeleccionarCitaPage.component.css',
@@ -44,6 +63,7 @@ declare var bootstrap: any;
 })
 export class PacienteSeleccionarCitaPageComponent { 
   listaEspecialidades$ : Observable<Especialidad[]> = of([]);
+  listaEspecialidades : Especialidad[] = [];
   listaDoctores : Doctor[] = [];
   listaDisDoctor : Disponibilidad[] = [];
   ubicacionConsultorio: string = "";
@@ -58,6 +78,7 @@ export class PacienteSeleccionarCitaPageComponent {
   litEspecialidad: string = "";
   litMedico:string = "";
   litTurno:string = "";
+  litPrecio:string = "";
  
   private _especialidadService = inject(EspecialidadService);
   private _doctorService = inject(DoctorService);
@@ -72,6 +93,8 @@ export class PacienteSeleccionarCitaPageComponent {
   constructor(
     private _sharedService: SharedService,
     private _formBuilder: FormBuilder,
+    private culquiService: CulquiService,
+    private _router: Router
   ) {
     this.formCrearReserva = this._formBuilder.group({
       IdPacienteUsuario: ['', [Validators.required]],
@@ -94,7 +117,12 @@ export class PacienteSeleccionarCitaPageComponent {
   }
   
   obtenerListaEspecialidades(){
-    this.listaEspecialidades$ = this._especialidadService.GetEspecialidades();
+    this._especialidadService.GetEspecialidades().subscribe({
+      next: (res) => {
+        this.listaEspecialidades = res;
+      }
+    });
+    
   }
 
   obtenerUsuarioLogeado(){
@@ -190,12 +218,15 @@ export class PacienteSeleccionarCitaPageComponent {
     this.turnoDisable = true;
 
     let turnoForm = this.formCrearReserva.get('turnoC')?.value;
-    let medicoForm =this.formCrearReserva.get('doctorC')?.value;
-  
-    this.litEspecialidad = this.formCrearReserva.get('especialidadC')?.value;
-    this.litMedico = this.listaDoctores.find( item => item === medicoForm )?.usuario.nombre ?? "";;
-    this.litTurno = this.listaDisDoctor.find( item => item === turnoForm )?.descripcion ?? "";
-    
+    let medicoForm =this.formCrearReserva.get('doctorC')?.value;      
+    let especialidadForm = this.formCrearReserva.get('especialidadC')?.value;
+
+    this.litMedico = this.listaDoctores.find( item => item.ID_doctor === medicoForm )?.usuario.nombre ?? "";;
+    this.litTurno = this.listaDisDoctor.find( item => item.ID_disponibilidad === turnoForm )?.descripcion ?? "";
+    this.litEspecialidad = this.listaEspecialidades.find( item => item.ID_especialidad === especialidadForm )?.nombre_especialidad ?? "";
+    this.litPrecio = this.listaEspecialidades.find( item => item.ID_especialidad === especialidadForm )?.precio_especialidad.toString() ?? "" ;
+
+   
   }
 
   grabarReserva(){
@@ -208,12 +239,13 @@ export class PacienteSeleccionarCitaPageComponent {
       fecha: fechaString
     }
 
-    console.log(newReservacion)
 
-    //crear consultorio
+
+   
+
+    //crear reservacion
     this._reservaService.PostCrearReservacion(newReservacion).subscribe({  
       next : (response : Reservacion | NestResponse ) => {
-        console.log(response)
         if( 'status' in response ){
           if(response.status == 404){
             Swal.fire({
@@ -224,11 +256,24 @@ export class PacienteSeleccionarCitaPageComponent {
             return;
           }
         }else{
-          Swal.fire({
-            title: 'Exito',          
-            html: `<p>Reserva Registrada Correctamente.</p>`,
-            icon: 'success',          
-          })
+          this.culquiService.configurarCulqi(this.litPrecio);
+
+
+          setTimeout(() => {
+            this.culquiService.closeCulqui();
+            Swal.fire({
+              title: 'Exito',          
+              html: `<p>Reserva Registrada Correctamente.</p>`,
+              icon: 'success',          
+            }).then( res => {
+              console.log(res)
+              if(res.isConfirmed){
+                this._router.navigate(['/pacienteCitas']);
+              }
+            }
+            )
+          }, 20000); 
+         
         }
       },
       error: (err) =>{
@@ -255,5 +300,11 @@ export class PacienteSeleccionarCitaPageComponent {
        
       }
     });
+   
+
+   
+    
+    
+
   }
 }

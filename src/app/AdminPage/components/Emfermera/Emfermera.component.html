@@ -1,0 +1,153 @@
+<div class="col-md-10 bg-gris">
+    <div class="row">
+        <p class="mt-3 fw-bold fs-5">Registro de especialidades</p>
+        <p>Bienvenido UsuarioNombre, desde esta área podrás registrar, actualiza y eliminar los datos
+            de las emfermeras tecnicas</p>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <a class="btn btn-success btn-crear" 
+                (click)="abrirModalCrearEmfermera()"
+                >Nueva Emfermera</a>
+            </div>
+        </div>
+        <div class="row mt-2 pt-3 bg-light shadow">
+            <div class="container ">
+                <table class="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Nombres</th>
+                            <th scope="col">Apellidos</th>
+                            <th scope="col" colspan="2">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (emfer of listaEmfermeras$ | async; track emfer ; let index = $index) {
+                            <tr> 
+                                <td>{{ index + 1 }}</td>
+                                <td>{{ emfer.nombres }}</td>
+                                <td>{{ emfer.apellidos }}</td>
+                                <td>
+                                    <a  class="btn btn-warning text-light btn-editar"
+                                        (click)="abrirModalEditarEmfermera(emfer.ID_emfermera);"
+                                    ><i class="fas fa-pen"></i></a>
+                                </td>
+                                <td>
+                                    <button 
+                                    type="submit" 
+                                    class="btn btn-danger mibtn-cancelar"
+                                    (click)="eliminarEmfermera(emfer.ID_emfermera)"            
+                                    >
+                                            <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                          } @empty {
+                            <tr> 
+                                <td colspan="3"> Lista de emfermeras vacia</td>
+                            </tr>
+                          }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------>
+<div class="modal" id="modalCrear" tabindex="-1">
+    <div class="modal-dialog">
+        <div  class="modal-content">
+            <div class="modal-header">
+                <p style="color: #5AC5C3;font-weight: bold;font-size: 30px;" class="modal-title">Nueva especialidad</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form [formGroup]="formCrearEmfermera">
+                <div class="modal-body">
+                    <p style="color:#ffb300; font-weight: bold;font-size: 30px;text-align: center;"> Crea una nueva especialidad</p>
+                    <div class="col-12  py-3 px-3">
+                        <div class="row">
+                            <!-- Grupo: Nombres -->
+                            <div class="form-group">
+                                <label for="nombresC">Nombres</label>
+                                <input  type="text"
+                                        class="form-control" 
+                                        name="nombresC" 
+                                        placeholder="Nombres"
+                                        formControlName="nombresC"
+                                        >
+                            </div>
+                            <!-- Grupo: Apellidos -->
+                            <div class="form-group">
+                                <label for="apellidosC">Apellidos</label>
+                                <input  type="text"
+                                        class="form-control" 
+                                        name="apellidosC" 
+                                        placeholder="Apellidos"
+                                        formControlName="apellidosC"
+                                        >
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <a style="width: auto;padding: 10px;background: #44469D;color: #ffff;border-radius: 10px;display: flex;justify-content: center;font-size: 20px;font-weight: bold;"
+                    (click)="crearEmfermera()"   
+                    class="text-decoration-none btn-pagar">
+                    Crear
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------>
+<div class="modal" id="modalEditar" tabindex="-1">
+    <div class="modal-dialog">
+        <div  class="modal-content">
+            <div class="modal-header">
+                <p style="color: #5AC5C3;font-weight: bold;font-size: 30px;" class="modal-title">Editar</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form [formGroup]="formEditarEmfermera">
+                <div class="modal-body">
+                    <p style="color:#ffb300; font-weight: bold;font-size: 30px;text-align: center;"> Editemos la especialidad</p>
+                    <div class="col-12  py-3 px-3">
+                        <div class="row">
+                            <!-- Grupo: Nombres -->
+                            <div class="form-group">
+                                <label for="nombresE">Nombres</label>
+                                <input  type="text"
+                                        class="form-control" 
+                                        name="nombresE" 
+                                        placeholder="Nombres"
+                                        formControlName="nombresE"
+                                        >
+                            </div>
+                            <!-- Grupo: Apellidos -->
+                            <div class="form-group">
+                                <label for="apellidosE">Apellidos</label>
+                                <input  type="text"
+                                        class="form-control" 
+                                        name="apellidosE" 
+                                        placeholder="Apellidos"
+                                        formControlName="apellidosE"
+                                        >
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <a style="width: auto;padding: 10px;background: #44469D;color: #ffff;border-radius: 10px;display: flex;justify-content: center;font-size: 20px;font-weight: bold;"
+                   class="text-decoration-none btn-pagar" 
+                   (click)="editarEmfermera()"
+                   >Actualizar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
